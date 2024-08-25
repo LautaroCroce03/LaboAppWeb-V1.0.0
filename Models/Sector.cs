@@ -2,7 +2,7 @@
 {
     public class Sector
     {
-        public int ID_Sector { get; set; }
+        public int IdSector { get; set; }
         public string Descripcion { get; set; }
     }
 }

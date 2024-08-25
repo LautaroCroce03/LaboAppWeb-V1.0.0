@@ -2,8 +2,8 @@
 {
     public class Comanda
     {
-        public int ID_Comanda { get; set; }
-        public int ID_Mesa { get; set; }
-        public string Nombre_Cliente { get; set; }
+        public int IdComanda { get; set; }
+        public int IdMesa { get; set; }
+        public string NombreCliente { get; set; }
     }
 }
