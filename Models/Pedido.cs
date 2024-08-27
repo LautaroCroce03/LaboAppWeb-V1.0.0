@@ -1,17 +1,27 @@
-﻿namespace LaboAppWebV1._0._0.Models
-{
-    public class Pedido
-    {
-        public int IdPedido { get; set; }
-        public int IdComanda { get; set; }
-        public string CodigoPedido { get; set; }
-        public Enums.EstadoPedido Estado { get; set; } // Pendiente, En preparación, Listo para servir
-        public DateTime FechaCreacion { get; set; }
-        public DateTime? FechaFinalizacion { get; set; }
-        public TimeSpan TiempoEstimado { get; set; }
-        public int IdMesa { get; set; }
-        public int IdMozo { get; set; }
+﻿using System;
+using System.Collections.Generic;
 
-        public ICollection<ProductoPedido> ProductoPedidos { get; set; } // Relación uno a muchos con ProductoPedido
-    }
+namespace LaboAppWebV1._0._0.Models;
+
+public partial class Pedido
+{
+    public int IdPedido { get; set; }
+
+    public int IdComanda { get; set; }
+
+    public int IdProducto { get; set; }
+
+    public int Cantidad { get; set; }
+
+    public int IdEstado { get; set; }
+
+    public DateTime FechaCreacion { get; set; }
+
+    public DateTime FechaFinalizacion { get; set; }
+
+    public virtual Comanda IdComandaNavigation { get; set; } = null!;
+
+    public virtual EstadoPedido IdEstadoNavigation { get; set; } = null!;
+
+    public virtual Producto IdProductoNavigation { get; set; } = null!;
 }

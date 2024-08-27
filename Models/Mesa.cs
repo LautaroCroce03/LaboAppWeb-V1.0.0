@@ -1,11 +1,17 @@
-﻿using LaboAppWebV1._0._0.Enums;
+﻿using System;
+using System.Collections.Generic;
 
-namespace LaboAppWebV1._0._0.Models
+namespace LaboAppWebV1._0._0.Models;
+
+public partial class Mesa
 {
-    public class Mesa
-    {
-        public int IdMesa { get; set; }
-        public string CodigoMesa { get; set; } // Unique code of 5 characters
-        public Enums.EstadoMesa Estado{ get; set; } // Esperando pedido, Comiendo, Pagando, Cerrada
-    }
+    public int IdMesa { get; set; }
+
+    public string Nombre { get; set; } = null!;
+
+    public int IdEstado { get; set; }
+
+    public virtual ICollection<Comanda> Comanda { get; set; } = new List<Comanda>();
+
+    public virtual EstadoMesa IdEstadoNavigation { get; set; } = null!;
 }
