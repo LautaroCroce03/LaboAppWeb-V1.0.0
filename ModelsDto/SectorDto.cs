@@ -1,6 +1,6 @@
-﻿namespace LaboAppWebV1._0._0.Models
+﻿namespace LaboAppWebV1._0._0.ModelsDto
 {
-    public class Sector
+    public class SectorDto
     {
         public int IdSector { get; set; }
         public string Descripcion { get; set; }
