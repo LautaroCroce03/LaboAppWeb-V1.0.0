@@ -1,25 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
-    public class Mesa
+    public class Sector: ISectorDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
 
-        public Mesa(LaboAppWebV1Context laboAppWebV1Context)
+        public Sector(LaboAppWebV1Context laboAppWebV1Context)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
         }
 
-        public async Task<Int32> AgregarAsync(Models.Mesa mesa) 
+        public async Task<Int32> AgregarAsync(Models.Sectore sectore)
         {
 
             try
             {
-                await _laboAppWebV1Context.AddAsync(mesa);
+                await _laboAppWebV1Context.Sectores.AddAsync(sectore);
                 await _laboAppWebV1Context.SaveChangesAsync();
 
-                return mesa.IdMesa;
+                return sectore.IdSector;
             }
             catch (Exception)
             {
@@ -28,21 +29,21 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Mesa>> Listado()
+        public async Task<List<Models.Sectore>> Listado()
         {
             try
             {
-                var result = await _laboAppWebV1Context.Mesas.ToListAsync();
+                var result = await _laboAppWebV1Context.Sectores.ToListAsync();
 
-                if ((result != null) && (result.Count > 0)) 
+                if ((result != null) && (result.Count > 0))
                 {
                     return result;
                 }
-                else 
+                else
                 {
-                    return new List<Models.Mesa>();
+                    return new List<Models.Sectore>();
                 }
-                
+
             }
             catch (Exception)
             {
