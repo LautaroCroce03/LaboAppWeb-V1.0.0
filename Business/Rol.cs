@@ -29,12 +29,12 @@ namespace LaboAppWebV1._0._0.Business
 			}
         }
 
-        public async Task<List<RolListDto>> Listado()
+        public async Task<List<RolListDto>> ListadoAsync()
         {
             try
             {
                 List<RolListDto> rolListDtos = new List<RolListDto>();
-                var _list = await _rolDataAccess.Listado();
+                var _list = await _rolDataAccess.ListadoAsync();
 
                 if ((_list != null) && (_list.Count > 0))
                 {

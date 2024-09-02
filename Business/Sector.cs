@@ -28,13 +28,13 @@ namespace LaboAppWebV1._0._0.Business
 			}
         }
 
-        public async Task<List<ModelsDto.SectorListDto>> Listado()
+        public async Task<List<ModelsDto.SectorListDto>> ListadoAsync()
         {
             try
             {
                 List<ModelsDto.SectorListDto> sectorDtosList = new List<ModelsDto.SectorListDto>();
 
-                var _sectorList = await _sectorDataAccess.Listado();
+                var _sectorList = await _sectorDataAccess.ListadoAsync();
 
 
                 if (_sectorList.Count > 0) 

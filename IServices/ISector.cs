@@ -3,11 +3,11 @@
     public interface ISectorDataAccess
     {
         Task<Int32> AgregarAsync(Models.Sectore sectore);
-        Task<List<Models.Sectore>> Listado();
+        Task<List<Models.Sectore>> ListadoAsync();
     }
     public interface ISectorBusiness
     {
         Task<Int32> AgregarAsync(ModelsDto.SectorDto sectorDto);
-        Task<List<ModelsDto.SectorListDto>> Listado();
+        Task<List<ModelsDto.SectorListDto>> ListadoAsync();
     }
 }

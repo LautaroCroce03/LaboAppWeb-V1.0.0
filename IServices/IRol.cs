@@ -3,11 +3,11 @@
     public interface IRolDataAccess
     {
         Task<Int32> AgregarAsync(Models.Role rol);
-        Task<List<Models.Role>> Listado();
+        Task<List<Models.Role>> ListadoAsync();
     }
     public interface IRolBusiness
     {
         Task<Int32> AgregarAsync(ModelsDto.RolDto rolDto);
-        Task<List<ModelsDto.RolListDto>> Listado();
+        Task<List<ModelsDto.RolListDto>> ListadoAsync();
     }
 }

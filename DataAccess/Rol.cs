@@ -29,7 +29,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Role>> Listado()
+        public async Task<List<Models.Role>> ListadoAsync()
         {
             try
             {

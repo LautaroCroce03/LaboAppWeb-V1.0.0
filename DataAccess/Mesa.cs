@@ -28,7 +28,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Mesa>> Listado()
+        public async Task<List<Models.Mesa>> ListadoAsync()
         {
             try
             {

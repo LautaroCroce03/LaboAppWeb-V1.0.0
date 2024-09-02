@@ -43,8 +43,10 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
 
     services.AddScoped<ISectorBusiness, LaboAppWebV1._0._0.Business.Sector>();
     services.AddScoped<IRolBusiness, LaboAppWebV1._0._0.Business.Rol>();
+    services.AddScoped<IEmpleadoBusiness, LaboAppWebV1._0._0.Business.Empleado>();
 
     services.AddScoped<IRolDataAccess, LaboAppWebV1._0._0.DataAccess.Rol>();
     services.AddScoped<ISectorDataAccess, LaboAppWebV1._0._0.DataAccess.Sector>();
+    services.AddScoped<IEmpleadoDataAccess, LaboAppWebV1._0._0.DataAccess.Empleado>();
 
 }

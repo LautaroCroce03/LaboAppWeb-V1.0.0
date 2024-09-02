@@ -41,7 +41,7 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-                var _result = await _sector.Listado();
+                var _result = await _sector.ListadoAsync();
 
                 if (_result.Count > 0)
                 {
