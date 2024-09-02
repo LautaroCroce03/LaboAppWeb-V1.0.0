@@ -14,27 +14,27 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
         }
 
-        public virtual DbSet<Comanda> Comandas { get; set; }
+        public virtual DbSet<Models.Comanda> Comandas { get; set; }
 
-        public virtual DbSet<Empleado> Empleados { get; set; }
+        public virtual DbSet<Models.Empleado> Empleados { get; set; }
 
-        public virtual DbSet<EstadoMesa> EstadoMesas { get; set; }
+        public virtual DbSet<Models.EstadoMesa> EstadoMesas { get; set; }
 
-        public virtual DbSet<EstadoPedido> EstadoPedidos { get; set; }
+        public virtual DbSet<Models.EstadoPedido> EstadoPedidos { get; set; }
 
-        public virtual DbSet<Mesa> Mesas { get; set; }
+        public virtual DbSet<Models.Mesa> Mesas { get; set; }
 
-        public virtual DbSet<Pedido> Pedidos { get; set; }
+        public virtual DbSet<Models.Pedido> Pedidos { get; set; }
 
-        public virtual DbSet<Producto> Productos { get; set; }
+        public virtual DbSet<Models.Producto> Productos { get; set; }
 
-        public virtual DbSet<Role> Roles { get; set; }
+        public virtual DbSet<Models.Role> Roles { get; set; }
 
-        public virtual DbSet<Sectore> Sectores { get; set; }
+        public virtual DbSet<Models.Sectore> Sectores { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Comanda>(entity =>
+            modelBuilder.Entity<Models.Comanda>(entity =>
             {
                 entity.HasKey(e => e.IdComandas);
 
@@ -53,7 +53,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasConstraintName("FK_comandas_mesas");
             });
 
-            modelBuilder.Entity<Empleado>(entity =>
+            modelBuilder.Entity<Models.Empleado>(entity =>
             {
                 entity.HasKey(e => e.IdEmpleado);
 
@@ -86,7 +86,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasConstraintName("FK_empleados_sectores");
             });
 
-            modelBuilder.Entity<EstadoMesa>(entity =>
+            modelBuilder.Entity<Models.EstadoMesa>(entity =>
             {
                 entity.HasKey(e => e.IdEstado);
 
@@ -99,7 +99,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasColumnName("descripcion");
             });
 
-            modelBuilder.Entity<EstadoPedido>(entity =>
+            modelBuilder.Entity<Models.EstadoPedido>(entity =>
             {
                 entity.HasKey(e => e.IdEstado);
 
@@ -112,7 +112,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasColumnName("descripcion");
             });
 
-            modelBuilder.Entity<Mesa>(entity =>
+            modelBuilder.Entity<Models.Mesa>(entity =>
             {
                 entity.HasKey(e => e.IdMesa);
 
@@ -131,7 +131,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasConstraintName("FK_mesas_estado_mesas");
             });
 
-            modelBuilder.Entity<Pedido>(entity =>
+            modelBuilder.Entity<Models.Pedido>(entity =>
             {
                 entity.HasKey(e => e.IdPedido);
 
@@ -167,7 +167,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasConstraintName("FK_pedidos_productos");
             });
 
-            modelBuilder.Entity<Producto>(entity =>
+            modelBuilder.Entity<Models.Producto>(entity =>
             {
                 entity.HasKey(e => e.IdProducto);
 
@@ -190,7 +190,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasConstraintName("FK_productos_sectores");
             });
 
-            modelBuilder.Entity<Role>(entity =>
+            modelBuilder.Entity<Models.Role>(entity =>
             {
                 entity.HasKey(e => e.IdRol);
 
@@ -203,7 +203,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                     .HasColumnName("descripcion");
             });
 
-            modelBuilder.Entity<Sectore>(entity =>
+            modelBuilder.Entity<Models.Sectore>(entity =>
             {
                 entity.HasKey(e => e.IdSector);
 

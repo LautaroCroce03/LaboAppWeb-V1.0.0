@@ -28,7 +28,16 @@ namespace LaboAppWebV1._0._0.DataAccess
             try
             {
                 var result = await _laboAppWebV1Context.Mesas.ToListAsync();
-                return result;
+
+                if ((result != null) && (result.Count > 0)) 
+                {
+                    return result;
+                }
+                else 
+                {
+                    return new List<Models.Mesa>();
+                }
+                
             }
             catch (Exception)
             {
