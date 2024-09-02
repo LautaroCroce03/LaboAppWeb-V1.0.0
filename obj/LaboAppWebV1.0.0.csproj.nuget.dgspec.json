@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj": {}
+    "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj": {}
   },
   "projects": {
-    "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj": {
+    "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
+        "projectUniqueName": "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
         "projectName": "LaboAppWebV1.0.0",
-        "projectPath": "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
+        "projectPath": "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
         "packagesPath": "C:\\Users\\BenitoAdmin\\.nuget\\packages\\",
-        "outputPath": "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\obj\\",
+        "outputPath": "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"

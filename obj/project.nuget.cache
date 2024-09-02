@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "VPgBmSmK2BxJXSF8Qx8iYdqJ3783MglBqFGK74M68tWtWCCWW6YdYv5WTEIDi/0FzevZa1CYiJZwT8As+OPf7g==",
+  "dgSpecHash": "ySZdVr7xq9q+wsBA1BQXxQlq1v39XtFOHcq1gc2bz9AwJHeaGBNbHtZfLrPSb7T2X9698MxC2VctIGsZiznzyg==",
   "success": true,
-  "projectFilePath": "D:\\Istea\\22\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
+  "projectFilePath": "D:\\Istea\\23\\LaboAppWeb-V1.0.0\\LaboAppWebV1.0.0.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\BenitoAdmin\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\BenitoAdmin\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
