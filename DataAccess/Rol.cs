@@ -1,25 +1,26 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
-    public class Mesa
+    public class Rol: IRolDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
 
-        public Mesa(LaboAppWebV1Context laboAppWebV1Context)
+        public Rol(LaboAppWebV1Context laboAppWebV1Context)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
         }
 
-        public async Task<Int32> AgregarAsync(Models.Mesa mesa) 
+        public async Task<Int32> AgregarAsync(Models.Role rol)
         {
 
             try
             {
-                await _laboAppWebV1Context.AddAsync(mesa);
+                await _laboAppWebV1Context.Roles.AddAsync(rol);
                 await _laboAppWebV1Context.SaveChangesAsync();
 
-                return mesa.IdMesa;
+                return rol.IdRol;
             }
             catch (Exception)
             {
@@ -28,21 +29,21 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Mesa>> Listado()
+        public async Task<List<Models.Role>> Listado()
         {
             try
             {
-                var result = await _laboAppWebV1Context.Mesas.ToListAsync();
+                var result = await _laboAppWebV1Context.Roles.ToListAsync();
 
-                if ((result != null) && (result.Count > 0)) 
+                if ((result != null) && (result.Count > 0))
                 {
                     return result;
                 }
-                else 
+                else
                 {
-                    return new List<Models.Mesa>();
+                    return new List<Models.Role>();
                 }
-                
+
             }
             catch (Exception)
             {
