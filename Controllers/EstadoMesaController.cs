@@ -5,21 +5,21 @@ namespace LaboAppWebV1._0._0.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class MesaController : ControllerBase
+    public class EstadoMesaController : ControllerBase
     {
-        private readonly IMesaBusiness _mesaBusiness;
+        private readonly IEstadoMesaBusiness _estadoMesa;
 
-        public MesaController(IMesaBusiness mesaBusiness)
+        public EstadoMesaController(IEstadoMesaBusiness estadoMesa)
         {
-            _mesaBusiness = mesaBusiness;
+            _estadoMesa = estadoMesa;
         }
 
         [HttpPost()]
-        public async Task<IActionResult> Post([FromBody] ModelsDto.MesaDto mesa)
+        public async Task<IActionResult> Post([FromBody] ModelsDto.EstadoMesaDto estadoMesa)
         {
             try
             {
-                var _result = await _mesaBusiness.AgregarAsync(mesa);
+                var _result = await _estadoMesa.AgregarAsync(estadoMesa);
 
                 if (_result > 0)
                 {
@@ -41,7 +41,7 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-                var _result = await _mesaBusiness.ListadoAsync();
+                var _result = await _estadoMesa.ListadoAsync();
 
                 if (_result.Count > 0)
                 {

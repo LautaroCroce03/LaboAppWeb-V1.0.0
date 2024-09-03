@@ -2,8 +2,9 @@
 {
     public class MesaDto
     {
-        public int IdMesa { get; set; }
-        public string CodigoMesa { get; set; } // Unique code of 5 characters
-        public Enums.EstadoMesa Estado { get; set; } // Esperando pedido, Comiendo, Pagando, Cerrada
+        public string Nombre { get; set; } = null!;
+
+        public int IdEstado { get; set; }
+
     }
 }
