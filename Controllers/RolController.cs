@@ -41,7 +41,7 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-                var _result = await _rolBusiness.Listado();
+                var _result = await _rolBusiness.ListadoAsync();
 
                 if (_result.Count > 0)
                 {

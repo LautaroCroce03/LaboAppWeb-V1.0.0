@@ -29,7 +29,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Sectore>> Listado()
+        public async Task<List<Models.Sectore>> ListadoAsync()
         {
             try
             {
@@ -50,5 +50,18 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task<bool> ExisteId(Int32 idSector) 
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Sectores.AnyAsync(id=> id.IdSector.Equals(idSector));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        } 
     }
 }

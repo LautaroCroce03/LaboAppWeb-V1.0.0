@@ -28,13 +28,12 @@ namespace LaboAppWebV1._0._0.Business
 				throw;
 			}
         }
-
-        public async Task<List<RolListDto>> Listado()
+        public async Task<List<RolListDto>> ListadoAsync()
         {
             try
             {
                 List<RolListDto> rolListDtos = new List<RolListDto>();
-                var _list = await _rolDataAccess.Listado();
+                var _list = await _rolDataAccess.ListadoAsync();
 
                 if ((_list != null) && (_list.Count > 0))
                 {
@@ -54,6 +53,19 @@ namespace LaboAppWebV1._0._0.Business
                 {
                     return rolListDtos;
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteId(int idRol)
+        {
+            try
+            {
+                return await _rolDataAccess.ExisteIdAsync(idRol);
             }
             catch (Exception)
             {

@@ -29,7 +29,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Role>> Listado()
+        public async Task<List<Models.Role>> ListadoAsync()
         {
             try
             {
@@ -47,6 +47,19 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (Exception)
             {
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteIdAsync(Int32 idRol)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Roles.AnyAsync(id => id.IdRol.Equals(idRol));
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }
