@@ -28,7 +28,6 @@ namespace LaboAppWebV1._0._0.Business
 				throw;
 			}
         }
-
         public async Task<List<RolListDto>> ListadoAsync()
         {
             try
@@ -54,6 +53,19 @@ namespace LaboAppWebV1._0._0.Business
                 {
                     return rolListDtos;
                 }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteId(int idRol)
+        {
+            try
+            {
+                return await _rolDataAccess.ExisteIdAsync(idRol);
             }
             catch (Exception)
             {

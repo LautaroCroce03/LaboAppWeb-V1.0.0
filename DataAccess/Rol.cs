@@ -50,5 +50,18 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task<bool> ExisteIdAsync(Int32 idRol)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Roles.AnyAsync(id => id.IdRol.Equals(idRol));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

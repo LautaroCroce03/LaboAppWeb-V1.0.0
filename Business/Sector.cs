@@ -27,7 +27,6 @@ namespace LaboAppWebV1._0._0.Business
 				throw;
 			}
         }
-
         public async Task<List<ModelsDto.SectorListDto>> ListadoAsync()
         {
             try
@@ -53,6 +52,19 @@ namespace LaboAppWebV1._0._0.Business
 
                 return new List<ModelsDto.SectorListDto>();
 
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteId(int idSector)
+        {
+            try
+            {
+                return await _sectorDataAccess.ExisteId(idSector);
             }
             catch (Exception)
             {

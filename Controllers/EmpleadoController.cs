@@ -8,10 +8,14 @@ namespace LaboAppWebV1._0._0.Controllers
     public class EmpleadoController : ControllerBase
     {
         private readonly IEmpleadoBusiness _empleadoBusiness;
+        private readonly IRolBusiness _rolBusiness;
+        private readonly ISectorBusiness _sectorBusiness;
 
-        public EmpleadoController(IEmpleadoBusiness empleadoBusiness)
+        public EmpleadoController(IEmpleadoBusiness empleadoBusiness, IRolBusiness rolBusiness, ISectorBusiness sectorBusiness)
         {
             _empleadoBusiness = empleadoBusiness;
+            _rolBusiness = rolBusiness;
+            _sectorBusiness = sectorBusiness;
         }
 
         [HttpPost()]
@@ -19,6 +23,17 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
+                //Validamos si existe el rol
+                if (!await _rolBusiness.ExisteId(empleadoDto.IdSector)) 
+                {
+                    return BadRequest("No existe el rol ingresado");
+                }
+                //Validamos si existe el sector
+                else if (!await _sectorBusiness.ExisteId(empleadoDto.IdSector))
+                {
+                    return BadRequest("No existe el sector ingresado");
+                }
+
                 var _result = await _empleadoBusiness.AgregarAsync(empleadoDto);
 
                 if (_result > 0)
