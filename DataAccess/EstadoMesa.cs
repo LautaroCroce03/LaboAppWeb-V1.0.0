@@ -3,24 +3,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
-    public class Mesa: IMesaDataAccess
+    public class EstadoMesa: IEstadoMesaDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
 
-        public Mesa(LaboAppWebV1Context laboAppWebV1Context)
+        public EstadoMesa(LaboAppWebV1Context laboAppWebV1Context)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
         }
 
-        public async Task<Int32> AgregarAsync(Models.Mesa mesa) 
+        public async Task<Int32> AgregarAsync(Models.EstadoMesa estadoMesa)
         {
 
             try
             {
-                await _laboAppWebV1Context.Mesas.AddAsync(mesa);
+                await _laboAppWebV1Context.EstadoMesas.AddAsync(estadoMesa);
                 await _laboAppWebV1Context.SaveChangesAsync();
 
-                return mesa.IdMesa;
+                return estadoMesa.IdEstado;
             }
             catch (Exception)
             {
@@ -29,21 +29,21 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Mesa>> ListadoAsync()
+        public async Task<List<Models.EstadoMesa>> ListadoAsync()
         {
             try
             {
-                var result = await _laboAppWebV1Context.Mesas.ToListAsync();
+                var result = await _laboAppWebV1Context.EstadoMesas.ToListAsync();
 
-                if ((result != null) && (result.Count > 0)) 
+                if ((result != null) && (result.Count > 0))
                 {
                     return result;
                 }
-                else 
+                else
                 {
-                    return new List<Models.Mesa>();
+                    return new List<Models.EstadoMesa>();
                 }
-                
+
             }
             catch (Exception)
             {
