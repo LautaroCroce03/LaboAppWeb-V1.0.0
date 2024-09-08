@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("LaboAppWebV1.0.0")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+522d09d4bcb0905fd0f85500e66cfadbd260ef77")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+21c9d02ac40da85506fbe9e60752ffe18faba89b")]
 [assembly: System.Reflection.AssemblyProductAttribute("LaboAppWebV1.0.0")]
 [assembly: System.Reflection.AssemblyTitleAttribute("LaboAppWebV1.0.0")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

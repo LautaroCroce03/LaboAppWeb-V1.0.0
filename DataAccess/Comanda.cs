@@ -55,7 +55,6 @@ namespace LaboAppWebV1._0._0.DataAccess
             {
                 var _comanda = from c in _laboAppWebV1Context.Comandas
                                join m in _laboAppWebV1Context.Mesas on c.IdMesa equals m.IdMesa
-
                                select new ModelsDto.ComandaDetalleDto()
                                {
                                    IdComandas = c.IdComandas,
@@ -66,10 +65,15 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return await _comanda.ToListAsync();
             }
-            catch (Exception)
+            catch (TaskCanceledException ex)
             {
-
-                throw;
+                // Manejar el caso de tiempo de espera o tarea cancelada
+                throw new Exception("La operación fue cancelada o expiró el tiempo de espera.", ex);
+            }
+            catch (Exception ex)
+            {
+                // Capturar cualquier otra excepción
+                throw new Exception("Ocurrió un error al obtener el listado de comandas.", ex);
             }
         }
     }

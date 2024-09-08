@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/comanda")]
     [ApiController]
     public class ComandaController : ControllerBase
     {
@@ -54,7 +54,7 @@ namespace LaboAppWebV1._0._0.Controllers
                 {
                     return BadRequest();
                 }       
-                var _comanda = _comandaBusiness.ListadoAsync(idComanda);
+                var _comanda = await _comandaBusiness.ListadoAsync(idComanda);
 
                 if (_comanda != null)
                 {
@@ -80,7 +80,7 @@ namespace LaboAppWebV1._0._0.Controllers
             try
             {
 
-                var _comanda = _comandaBusiness.ListadoAsync();
+                var _comanda = await _comandaBusiness.ListadoAsync();
 
                 if (_comanda != null)
                 {
