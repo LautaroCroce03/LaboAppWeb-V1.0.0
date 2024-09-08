@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/sector")]
     [ApiController]
     public class SectorController : ControllerBase
     {

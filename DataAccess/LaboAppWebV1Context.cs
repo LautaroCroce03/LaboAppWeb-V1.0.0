@@ -1,5 +1,4 @@
-﻿using LaboAppWebV1._0._0.Models;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
@@ -137,9 +136,7 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 entity.ToTable("pedidos");
 
-                entity.Property(e => e.IdPedido)
-                    .ValueGeneratedNever()
-                    .HasColumnName("id_pedido");
+                entity.Property(e => e.IdPedido).HasColumnName("id_pedido");
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")

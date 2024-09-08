@@ -2,16 +2,15 @@
 {
     public class PedidoDto
     {
-        public int IdPedido { get; set; }
-        public int IdComanda { get; set; }
-        public string CodigoPedido { get; set; }
-        public Enums.EstadoPedido Estado { get; set; } // Pendiente, En preparación, Listo para servir
-        public DateTime FechaCreacion { get; set; }
-        public DateTime? FechaFinalizacion { get; set; }
-        public TimeSpan TiempoEstimado { get; set; }
-        public int IdMesa { get; set; }
-        public int IdMozo { get; set; }
+        public int IdProducto { get; set; }
 
-        public ICollection<ProductoPedidoDto> ProductoPedidos { get; set; } // Relación uno a muchos con ProductoPedido
+        public int Cantidad { get; set; }
+
+        public int IdEstado { get; set; }
+
+        //public DateTime FechaCreacion { get; set; }
+
+        //public DateTime FechaFinalizacion { get; set; }
+
     }
 }
