@@ -2,8 +2,8 @@
 {
     public class ComandaDto
     {
-        public int IdComanda { get; set; }
         public int IdMesa { get; set; }
         public string NombreCliente { get; set; }
+        public List<PedidoDto> Pedidos { get; set; }
     }
 }

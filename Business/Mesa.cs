@@ -63,5 +63,18 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<bool> ExisteAsync(Int32 idMesa) 
+        {
+            try
+            {
+                return await _mesaData.ExisteAsync(idMesa);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
