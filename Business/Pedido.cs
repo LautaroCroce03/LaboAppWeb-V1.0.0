@@ -1,4 +1,5 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -6,24 +7,27 @@ namespace LaboAppWebV1._0._0.Business
     public class Pedido : IPedidoBusiness
     {
         private readonly IPedidoDataAccess _pedidoDataAccess;
+        private readonly IMapper _mapper;
 
-        public Pedido(IPedidoDataAccess pedidoDataAccess)
+        public Pedido(IPedidoDataAccess pedidoDataAccess, IMapper mapper)
         {
             _pedidoDataAccess = pedidoDataAccess;
+            _mapper = mapper;
         }
 
         public async Task<bool> AgregarAsync(PedidoDto pedido, Int32 idComanda)
         {
             try
             {
-                DateTime _horaAlta = DateTime.Now;
-                var _pedido = new Models.Pedido();
-                _pedido.Cantidad = pedido.Cantidad;
-                _pedido.IdProducto = pedido.IdProducto;
-                _pedido.FechaCreacion = _horaAlta;
-                _pedido.FechaFinalizacion = _horaAlta;
-                _pedido.IdComanda = idComanda;
-                _pedido.IdEstado = pedido.IdEstado;
+                var fechaActual = DateTime.Now;
+
+                //parametros al hacer el mapeo
+                var _pedido = _mapper.Map<Models.Pedido>(pedido, opt =>
+                {
+                    opt.Items["fechaActual"] = fechaActual;
+                    opt.Items["idComanda"] = idComanda;
+                });
+
 
                 return await _pedidoDataAccess.AgregarAsync(_pedido);
             }
@@ -38,23 +42,16 @@ namespace LaboAppWebV1._0._0.Business
         {
             try
             {
-                DateTime _horaAlta = DateTime.Now;
-                var _pedidos = new List<Models.Pedido>();
-                Models.Pedido _pedido;
-                foreach (var _ped in pedidos) 
+             
+                var fechaActual = DateTime.Now; 
+
+                //parametros al hacer el mapeo
+                var _pedido = _mapper.Map<List<Models.Pedido>>(pedidos, opt =>
                 {
-                    _pedido = new Models.Pedido();
-                    _pedido.Cantidad = _ped.Cantidad;
-                    _pedido.IdProducto = _ped.IdProducto;
-                    _pedido.FechaCreacion = _horaAlta;
-                    _pedido.FechaFinalizacion = _horaAlta;
-                    _pedido.IdComanda = idComanda;
-                    _pedido.IdEstado = _ped.IdEstado;
-
-                    _pedidos.Add(_pedido);
-
-                }
-                return await _pedidoDataAccess.AgregarAsync(_pedidos);
+                    opt.Items["fechaActual"] = fechaActual;
+                    opt.Items["idComanda"] = idComanda;
+                });
+                return await _pedidoDataAccess.AgregarAsync(_pedido);
 
             }
             catch (Exception)
