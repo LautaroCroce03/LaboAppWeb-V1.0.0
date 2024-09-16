@@ -1,4 +1,5 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -6,10 +7,11 @@ namespace LaboAppWebV1._0._0.Business
     public class Mesa: IMesaBusiness
     {
         private readonly IMesaDataAccess _mesaData;
-
-        public Mesa(IMesaDataAccess mesaData)
+        private readonly IMapper _mapper;
+        public Mesa(IMesaDataAccess mesaData, IMapper mapper)
         {
             _mesaData = mesaData;
+            _mapper = mapper;
         }
 
         public async Task<Int32> AgregarAsync(ModelsDto.MesaDto estadoMesa)
@@ -17,9 +19,7 @@ namespace LaboAppWebV1._0._0.Business
 
             try
             {
-                var _mesa = new Models.Mesa();
-                _mesa.IdEstado = estadoMesa.IdEstado;
-                _mesa.Nombre = estadoMesa.Nombre;
+                var _mesa = _mapper.Map<Models.Mesa>(estadoMesa);
 
                 return await _mesaData.AgregarAsync(_mesa);
             }
