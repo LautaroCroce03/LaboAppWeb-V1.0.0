@@ -7,6 +7,9 @@ namespace LaboAppWebV1._0._0.Helpers
         public ApplicationMapper()
         {
             CreateMap<ModelsDto.PedidoDto, Models.Pedido>().ReverseMap();
+            CreateMap<ModelsDto.EmpleadoDto, Models.Empleado>().ReverseMap();
+            CreateMap<ModelsDto.EstadoMesaDto, Models.EstadoMesa>().ReverseMap();
+            CreateMap<List<ModelsDto.EstadoMesaDto>, List<Models.EstadoMesa>>().ReverseMap();
 
             //Automapper context Items
             CreateMap<ModelsDto.PedidoDto, Models.Pedido>()
