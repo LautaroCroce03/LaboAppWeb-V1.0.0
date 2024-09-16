@@ -40,15 +40,7 @@ namespace LaboAppWebV1._0._0.Business
 
                 if (_result.Count > 0)
                 {
-                    //estadoMesaLists = _mapper.Map<List<EstadoMesaList>>(_result);
-                    EstadoMesaList estadoMesaList;
-                    foreach (var item in _result)
-                    {
-                        estadoMesaList = new EstadoMesaList();
-                        estadoMesaList.IdEstado = item.IdEstado;
-                        estadoMesaList.Descripcion = item.Descripcion;
-                        estadoMesaLists.Add(estadoMesaList);
-                    }
+                    estadoMesaLists = _mapper.Map<List<EstadoMesaList>>(_result);
 
                     return estadoMesaLists;
                 }
