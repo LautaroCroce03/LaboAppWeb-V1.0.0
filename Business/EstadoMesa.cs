@@ -1,4 +1,5 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -6,10 +7,12 @@ namespace LaboAppWebV1._0._0.Business
     public class EstadoMesa : IEstadoMesaBusiness
     {
         private readonly IEstadoMesaDataAccess _dataAccess;
+        private readonly IMapper _mapper;
 
-        public EstadoMesa(IEstadoMesaDataAccess dataAccess)
+        public EstadoMesa(IEstadoMesaDataAccess dataAccess, IMapper mapper)
         {
             _dataAccess = dataAccess;
+            _mapper = mapper;
         }
 
         public async Task<Int32> AgregarAsync(EstadoMesaDto estadoMesa)
@@ -17,8 +20,7 @@ namespace LaboAppWebV1._0._0.Business
 
             try
             {
-                var _estadoMesa = new Models.EstadoMesa();
-                _estadoMesa.Descripcion = estadoMesa.Descripcion;
+                var _estadoMesa = _mapper.Map<Models.EstadoMesa>(estadoMesa);
                 return await _dataAccess.AgregarAsync(_estadoMesa);
             }
             catch (Exception)
@@ -38,14 +40,7 @@ namespace LaboAppWebV1._0._0.Business
 
                 if (_result.Count > 0)
                 {
-                    EstadoMesaList estadoMesaList;
-                    foreach (var item in _result)
-                    {
-                        estadoMesaList = new EstadoMesaList();
-                        estadoMesaList.IdEstado = item.IdEstado;
-                        estadoMesaList.Descripcion = item.Descripcion;
-                        estadoMesaLists.Add(estadoMesaList);
-                    }
+                    estadoMesaLists = _mapper.Map<List<EstadoMesaList>>(_result);
 
                     return estadoMesaLists;
                 }

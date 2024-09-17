@@ -1,4 +1,5 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -6,18 +7,18 @@ namespace LaboAppWebV1._0._0.Business
     public class Rol: IRolBusiness
     {
         private readonly IRolDataAccess _rolDataAccess;
-
-        public Rol(IRolDataAccess rolDataAccess)
+        private readonly IMapper _mapper;
+        public Rol(IRolDataAccess rolDataAccess, IMapper mapper)
         {
             _rolDataAccess = rolDataAccess;
+            _mapper = mapper;
         }
 
         public async Task<Int32> AgregarAsync(ModelsDto.RolDto rolDto) 
         {
 			try
 			{
-				var _rol = new Models.Role();
-                _rol.Descripcion = rolDto.Descripcion;
+				var _rol = _mapper.Map<Models.Role>(rolDto);
 
                 return await _rolDataAccess.AgregarAsync(_rol);
 
@@ -37,15 +38,7 @@ namespace LaboAppWebV1._0._0.Business
 
                 if ((_list != null) && (_list.Count > 0))
                 {
-                    RolListDto rolListDto;
-                    foreach (var item in _list)
-                    {
-                        rolListDto = new RolListDto();
-
-                        rolListDto.Descripcion = item.Descripcion;
-                        rolListDto.IdRol = item.IdRol;
-                        rolListDtos.Add(rolListDto);
-                    }
+                    rolListDtos = _mapper.Map<List<RolListDto>>(_list);
 
                     return rolListDtos;
                 }
