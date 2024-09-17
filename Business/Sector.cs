@@ -1,23 +1,23 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 
 namespace LaboAppWebV1._0._0.Business
 {
     public class Sector: ISectorBusiness
     {
 		private readonly ISectorDataAccess _sectorDataAccess;
-
-        public Sector(ISectorDataAccess sectorDataAccess)
+        private readonly IMapper _mapper;
+        public Sector(ISectorDataAccess sectorDataAccess, IMapper mapper)
         {
             _sectorDataAccess = sectorDataAccess;
+            _mapper = mapper;   
         }
 
-        public async Task<Int32> AgregarAsync(ModelsDto.SectorDto sectorDto) 
+        public async Task<Int32> AgregarAsync(ModelsDto.SectorDto sectorDto)
         {
-			try
-			{
-				var _sector = new Models.Sectore();
-                _sector.Descripcion = sectorDto.Descripcion;
-
+            try
+            {
+				var _sector = _mapper.Map< Models.Sectore>(sectorDto);
                 return await _sectorDataAccess.AgregarAsync(_sector);
 
             }
@@ -38,19 +38,13 @@ namespace LaboAppWebV1._0._0.Business
 
                 if (_sectorList.Count > 0) 
                 {
-                    ModelsDto.SectorListDto sectorDto;
-                    foreach (var item in _sectorList)
-                    {
-                        sectorDto = new ModelsDto.SectorListDto();
-                        sectorDto.Descripcion = item.Descripcion;
-                        sectorDto.IdSector = item.IdSector;
-                        sectorDtosList.Add(sectorDto);
-                    }
+
+                    sectorDtosList = _mapper.Map<List<ModelsDto.SectorListDto>>(_sectorList);
 
                     return sectorDtosList;
                 }
 
-                return new List<ModelsDto.SectorListDto>();
+                return sectorDtosList;
 
             }
             catch (Exception)

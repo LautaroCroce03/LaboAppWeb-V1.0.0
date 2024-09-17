@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using LaboAppWebV1._0._0.IServices;
-using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
 {
@@ -40,15 +39,7 @@ namespace LaboAppWebV1._0._0.Business
 
                 if (_result.Count > 0)
                 {
-                    ModelsDto.MesaListDto mesaListDto;
-                    foreach (var item in _result)
-                    {
-                        mesaListDto = new MesaListDto();
-                        mesaListDto.IdMesa = item.IdMesa;
-                        mesaListDto.Nombre = item.Nombre;
-                        mesaListDto.IdEstado = item.IdEstado;
-                        _mesaLists.Add(mesaListDto);
-                    }
+                    _mesaLists = _mapper.Map<List<ModelsDto.MesaListDto>>(_result);
 
                     return _mesaLists;
                 }
