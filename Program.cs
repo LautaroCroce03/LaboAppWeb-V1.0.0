@@ -48,6 +48,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IMesaBusiness, LaboAppWebV1._0._0.Business.Mesa>();
     services.AddScoped<IPedidoBusiness, LaboAppWebV1._0._0.Business.Pedido>();
     services.AddScoped<IComandaBusiness, LaboAppWebV1._0._0.Business.Comanda>();
+    services.AddScoped<IProductoBusiness, LaboAppWebV1._0._0.Business.Producto>();
 
     services.AddScoped<IRolDataAccess, LaboAppWebV1._0._0.DataAccess.Rol>();
     services.AddScoped<ISectorDataAccess, LaboAppWebV1._0._0.DataAccess.Sector>();
@@ -56,6 +57,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IMesaDataAccess, LaboAppWebV1._0._0.DataAccess.Mesa>();
     services.AddScoped<IPedidoDataAccess, LaboAppWebV1._0._0.DataAccess.Pedido>();
     services.AddScoped<IComandaDataAccess, LaboAppWebV1._0._0.DataAccess.Comanda>();
+    services.AddScoped<IProductoDataAccess, LaboAppWebV1._0._0.DataAccess.Producto>();
 
     services.AddAutoMapper(typeof(LaboAppWebV1._0._0.Helpers.ApplicationMapper));
 }
