@@ -50,5 +50,18 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task<bool> ExisteAsync(Int32 idEstado)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.EstadoMesas.AnyAsync(x => x.IdEstado.Equals(idEstado));
+
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
     }
 }
