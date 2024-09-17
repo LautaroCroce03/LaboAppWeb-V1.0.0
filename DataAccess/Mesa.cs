@@ -62,5 +62,30 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task<bool> ActualizarAsync(Models.Mesa _mesa)
+        {
+
+            try
+            {
+                var mesa = await _laboAppWebV1Context.Mesas.FindAsync(_mesa.IdMesa);
+                if (mesa != null)
+                {
+                    mesa.Nombre = _mesa.Nombre;
+                    mesa.IdEstado = _mesa.IdEstado;
+
+                    var rowsAffected = await _laboAppWebV1Context.SaveChangesAsync();
+                    return rowsAffected > 0;
+                }
+                return false;
+
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

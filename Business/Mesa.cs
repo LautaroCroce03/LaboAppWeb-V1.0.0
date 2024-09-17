@@ -67,5 +67,21 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<bool> ActualizarAsync(ModelsDto.MesaListDto estadoMesa)
+        {
+
+            try
+            {
+                var _mesa = _mapper.Map<Models.Mesa>(estadoMesa);
+
+                return await _mesaData.ActualizarAsync(_mesa);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

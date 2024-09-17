@@ -8,10 +8,12 @@ namespace LaboAppWebV1._0._0.Controllers
     public class MesaController : ControllerBase
     {
         private readonly IMesaBusiness _mesaBusiness;
+        private readonly IEstadoMesaBusiness _estadoMesaBusiness;
 
-        public MesaController(IMesaBusiness mesaBusiness)
+        public MesaController(IMesaBusiness mesaBusiness, IEstadoMesaBusiness estadoMesaBusiness)
         {
             _mesaBusiness = mesaBusiness;
+            _estadoMesaBusiness = estadoMesaBusiness;
         }
 
         [HttpPost()]
@@ -50,6 +52,36 @@ namespace LaboAppWebV1._0._0.Controllers
                 else
                 {
                     return BadRequest("Error al realizar el alta");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        [HttpPut()]
+        public async Task<IActionResult> Put([FromBody] ModelsDto.MesaListDto mesa)
+        {
+            try
+            {
+
+                if(!await _mesaBusiness.ExisteAsync(mesa.IdMesa))
+                    return BadRequest("No existe el id ingresado");
+
+                if(!await _estadoMesaBusiness.ExisteAsync(mesa.IdEstado))
+                    return BadRequest("No existe el id ingresado");
+
+                var _result = await _mesaBusiness.ActualizarAsync(mesa);
+
+                if (_result)
+                {
+                    return Ok("Se actualizo correctamente");
+                }
+                else
+                {
+                    return BadRequest("Error");
                 }
             }
             catch (Exception)

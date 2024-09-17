@@ -36,6 +36,7 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+
         [HttpGet()]
         public async Task<IActionResult> Get()
         {
