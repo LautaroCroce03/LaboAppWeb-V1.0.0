@@ -62,7 +62,7 @@ namespace LaboAppWebV1._0._0.Controllers
         }
 
         [HttpPut()]
-        public async Task<IActionResult> Post([FromBody] ModelsDto.MesaListDto mesa)
+        public async Task<IActionResult> Put([FromBody] ModelsDto.MesaListDto mesa)
         {
             try
             {
