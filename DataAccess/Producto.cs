@@ -48,5 +48,29 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+        public async Task<bool> ActualizarAsync(Models.Producto producto)
+        {
+            try
+            {
+                _laboAppWebV1Context.Productos.Update(producto);
+                await _laboAppWebV1Context.SaveChangesAsync();
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        // Asegúrate de que también tengas un método para obtener el producto por ID
+        public async Task<Models.Producto> ExisteAsync(int id)
+        {
+            return await _laboAppWebV1Context.Productos.FindAsync(id);
+        }
+
+
+
+
+
     }
 }

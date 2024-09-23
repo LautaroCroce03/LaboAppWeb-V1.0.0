@@ -8,11 +8,14 @@ namespace LaboAppWebV1._0._0.IServices
     {
         Task<int> AgregarAsync(Models.Producto producto);
         Task<List<Models.Producto>> ListadoAsync();
+        Task<bool> ActualizarAsync(Models.Producto producto);
+        Task<Models.Producto> ExisteAsync(int id);
     }
 
     public interface IProductoBusiness
     {
         Task<int> AgregarAsync(ProductoDto productoDto);
         Task<List<ProductoDto>> ListadoAsync();
+        Task<bool> ActualizarAsync(ProductoDto productoDto);
     }
 }

@@ -59,5 +59,5 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IComandaDataAccess, LaboAppWebV1._0._0.DataAccess.Comanda>();
     services.AddScoped<IProductoDataAccess, LaboAppWebV1._0._0.DataAccess.Producto>();
 
-    services.AddAutoMapper(typeof(LaboAppWebV1._0._0.Helpers.ApplicationMapper));
+    services.AddAutoMapper(typeof(LaboAppWebV1._0._0.Mappers.MappersP));
 }
