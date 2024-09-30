@@ -72,5 +72,36 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<bool> ExisteAsync(Int32 codEmpleado)
+        {
+            try
+            {
+                return await _empleadoData.ExisteAsync(codEmpleado);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<int> ActualizarAsync(EmpleadoDto empleadoDto, Int32 codEmpleado)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.IdEmpleado = codEmpleado;
+
+                return await _empleadoData.AgregarAsync(_empleado);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

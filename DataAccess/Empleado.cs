@@ -50,5 +50,36 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+        public async Task<bool> ExisteAsync(Int32 codEmpleado)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Empleados.AnyAsync(e=> e.IdEmpleado.Equals(codEmpleado));
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<Int32> ActualizarAsync(Models.Empleado empleado)
+        {
+
+            try
+            {
+                _laboAppWebV1Context.Empleados.Update(empleado);
+                await _laboAppWebV1Context.SaveChangesAsync();
+
+                return empleado.IdEmpleado;
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
     }
 }
