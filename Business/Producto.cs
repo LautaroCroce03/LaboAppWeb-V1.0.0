@@ -70,5 +70,26 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<bool> ActualizarAsync(ProductoDto productoDto)
+        {
+            try
+            {
+                var productoExistente = await _productoData.ExisteAsync(productoDto.IdProducto);
+                if (productoExistente == null) return false;
+
+                productoExistente.Descripcion = productoDto.Descripcion;
+                productoExistente.Precio = productoDto.Precio;
+                productoExistente.Stock = productoDto.Stock;
+                productoExistente.IdSector = productoDto.IdSector;
+
+                return await _productoData.ActualizarAsync(productoExistente);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
     }
 }
