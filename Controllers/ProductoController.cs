@@ -1,4 +1,5 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using LaboAppWebV1._0._0.ModelsDto;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
@@ -68,5 +69,32 @@ namespace LaboAppWebV1._0._0.Controllers
                 return StatusCode(500, $"Error interno del servidor: {ex.Message}");
             }
         }
+
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Put(int id, [FromBody] ProductoDto productoDto)
+        {
+            try
+            {
+                if (id != productoDto.IdProducto)
+                    return BadRequest("El ID no coincide.");
+
+                var result = await _productoBusiness.ActualizarAsync(productoDto);
+
+                if (result)
+                {
+                    return Ok("Producto actualizado correctamente.");
+                }
+                else
+                {
+                    return BadRequest("Error al actualizar el producto.");
+                }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500, "Error interno del servidor.");
+            }
+        }
+
     }
 }
