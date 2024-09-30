@@ -73,5 +73,36 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> Post(int id, [FromBody] ModelsDto.EmpleadoDto empleadoDto)
+        {
+            try
+            {
+                //Validamos si existe el empleado
+                if (!await _empleadoBusiness.ExisteAsync(id))
+                {
+                    return BadRequest("No existe el empleado ingresado");
+                }
+
+
+
+                var _result = await _empleadoBusiness.ActualizarAsync(empleadoDto, id);
+
+                if (_result > 0)
+                {
+                    return Ok("Se actualizo correctamente");
+                }
+                else
+                {
+                    return BadRequest("Error al actualizar el alta");
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
