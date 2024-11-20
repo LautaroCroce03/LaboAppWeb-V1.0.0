@@ -16,7 +16,7 @@ namespace LaboAppWebV1._0._0.Business
             _tokenJWT = tokenJWT;
         }
 
-        public async Task<TokenJwtDto> Validar(LoginDto login) 
+        public async Task<TokenJwtDto> ValidarAsync(LoginDto login) 
         {
             try
             {
@@ -39,9 +39,9 @@ namespace LaboAppWebV1._0._0.Business
                 }
                 return new TokenJwtDto();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Validar");
                 throw;
             }
         }

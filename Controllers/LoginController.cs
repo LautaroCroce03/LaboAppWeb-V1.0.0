@@ -1,8 +1,5 @@
-﻿using LaboAppWebV1._0._0.Business;
-using LaboAppWebV1._0._0.IServices;
+﻿using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
@@ -11,10 +8,10 @@ namespace LaboAppWebV1._0._0.Controllers
     [ApiController]
     public class LoginController : ControllerBase
     {
-        private ILogger<Login> _logger;
+        private ILogger<LoginController> _logger;
         private readonly ILogin _login;
 
-        public LoginController(ILogger<Login> logger, ILogin login)
+        public LoginController(ILogger<LoginController> logger, ILogin login)
         {
             _logger = logger;
             _login = login;
@@ -28,7 +25,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if ((!string.IsNullOrEmpty(userManager.Usuario)) && (!string.IsNullOrEmpty(userManager.Password)))
                 {
-                    var _token = await _login.Validar(userManager);
+                    var _token = await _login.ValidarAsync(userManager);
                     if (_token != null)
                         return Ok(_token);
                     else 
@@ -41,6 +38,7 @@ namespace LaboAppWebV1._0._0.Controllers
             }
             catch (System.Exception ex)
             {
+                _logger.LogError(ex, "PostAsync");
                 throw;
             }
         }

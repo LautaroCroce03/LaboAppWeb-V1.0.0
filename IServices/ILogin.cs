@@ -4,6 +4,6 @@ namespace LaboAppWebV1._0._0.IServices
 {
     public interface ILogin
     {
-        Task<TokenJwtDto> Validar(LoginDto login);
+        Task<TokenJwtDto> ValidarAsync(LoginDto login);
     }
 }

@@ -9,11 +9,13 @@ namespace LaboAppWebV1._0._0.Controllers
     [ApiController]
     public class MesaController : ControllerBase
     {
+        private ILogger<MesaController> _logger;
         private readonly IMesaBusiness _mesaBusiness;
         private readonly IEstadoMesaBusiness _estadoMesaBusiness;
 
-        public MesaController(IMesaBusiness mesaBusiness, IEstadoMesaBusiness estadoMesaBusiness)
+        public MesaController(ILogger<MesaController> logger, IMesaBusiness mesaBusiness, IEstadoMesaBusiness estadoMesaBusiness)
         {
+            _logger = logger;
             _mesaBusiness = mesaBusiness;
             _estadoMesaBusiness = estadoMesaBusiness;
         }
@@ -35,9 +37,9 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Error al realizar el alta");
                 }
             }
-            catch (Exception)
+            catch (System.Exception ex)
             {
-
+                _logger.LogError(ex, "Post");
                 throw;
             }
         }
@@ -58,9 +60,9 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Error al realizar el alta");
                 }
             }
-            catch (Exception)
+            catch (System.Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }
@@ -89,9 +91,9 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Error");
                 }
             }
-            catch (Exception)
+            catch (System.Exception ex)
             {
-
+                _logger.LogError(ex, "Put");
                 throw;
             }
         }

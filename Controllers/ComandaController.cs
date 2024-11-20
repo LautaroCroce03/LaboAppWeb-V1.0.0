@@ -9,11 +9,13 @@ namespace LaboAppWebV1._0._0.Controllers
     [ApiController]
     public class ComandaController : ControllerBase
     {
+        private readonly ILogger<ComandaController> _logger;
         private readonly IComandaBusiness _comandaBusiness;
         private readonly IMesaBusiness _mesaBusiness;
 
-        public ComandaController(IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
+        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
         {
+            _logger = logger;
             _comandaBusiness = comandaBusiness;
             _mesaBusiness = mesaBusiness;
         }
@@ -41,9 +43,9 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Por favor completar los campos");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Post");
                 throw;
             }
         }
@@ -71,9 +73,9 @@ namespace LaboAppWebV1._0._0.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }
@@ -98,9 +100,9 @@ namespace LaboAppWebV1._0._0.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }

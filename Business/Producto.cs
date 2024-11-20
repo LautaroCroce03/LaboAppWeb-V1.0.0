@@ -7,10 +7,12 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Producto : IProductoBusiness
     {
+        private ILogger<Producto> _logger;
         private readonly IProductoDataAccess _productoData;
 
-        public Producto(IProductoDataAccess productoData)
+        public Producto(ILogger<Producto> logger, IProductoDataAccess productoData)
         {
+            _logger = logger;
             _productoData = productoData;
         }
 
@@ -28,8 +30,9 @@ namespace LaboAppWebV1._0._0.Business
 
                 return await _productoData.AgregarAsync(_prod);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -65,8 +68,9 @@ namespace LaboAppWebV1._0._0.Business
                     return productoDtos;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -85,8 +89,9 @@ namespace LaboAppWebV1._0._0.Business
 
                 return await _productoData.ActualizarAsync(productoExistente);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
         }

@@ -6,11 +6,13 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class EstadoMesa : IEstadoMesaBusiness
     {
+        private ILogger<EstadoMesa> _logger;
         private readonly IEstadoMesaDataAccess _dataAccess;
         private readonly IMapper _mapper;
 
-        public EstadoMesa(IEstadoMesaDataAccess dataAccess, IMapper mapper)
+        public EstadoMesa(ILogger<EstadoMesa> logger, IEstadoMesaDataAccess dataAccess, IMapper mapper)
         {
+            _logger = logger;
             _dataAccess = dataAccess;
             _mapper = mapper;
         }
@@ -23,9 +25,9 @@ namespace LaboAppWebV1._0._0.Business
                 var _estadoMesa = _mapper.Map<Models.EstadoMesa>(estadoMesa);
                 return await _dataAccess.AgregarAsync(_estadoMesa);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -49,9 +51,9 @@ namespace LaboAppWebV1._0._0.Business
                     return estadoMesaLists;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -61,9 +63,9 @@ namespace LaboAppWebV1._0._0.Business
             {
                 return await _dataAccess.ExisteAsync(idEstado);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteAsync");
                 throw;
             }
         }
