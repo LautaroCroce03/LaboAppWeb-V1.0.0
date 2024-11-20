@@ -80,6 +80,33 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+        public async Task<bool> ExisteLoginAsync(Models.Empleado empleado)
+        {
 
+            try
+            {
+                return await _laboAppWebV1Context.Empleados.AnyAsync(l => l.Password.Equals(empleado.Password) && 
+                                    l.Usuario.Equals(empleado.Usuario));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task<Models.Empleado> EmpleadoLoginAsync(Models.Empleado empleado)
+        {
+
+            try
+            {
+                return await _laboAppWebV1Context.Empleados.FirstOrDefaultAsync(l => l.Password.Equals(empleado.Password) &&
+                                    l.Usuario.Equals(empleado.Usuario));
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
@@ -15,6 +17,7 @@ namespace LaboAppWebV1._0._0.Controllers
         }
 
         [HttpPost()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post([FromBody] ModelsDto.RolDto rolDto)
         {
             try
@@ -37,6 +40,7 @@ namespace LaboAppWebV1._0._0.Controllers
             }
         }
         [HttpGet()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Get()
         {
             try
