@@ -1,4 +1,6 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
@@ -7,16 +9,19 @@ namespace LaboAppWebV1._0._0.Controllers
     [ApiController]
     public class ComandaController : ControllerBase
     {
+        private readonly ILogger<ComandaController> _logger;
         private readonly IComandaBusiness _comandaBusiness;
         private readonly IMesaBusiness _mesaBusiness;
 
-        public ComandaController(IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
+        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
         {
+            _logger = logger;
             _comandaBusiness = comandaBusiness;
             _mesaBusiness = mesaBusiness;
         }
 
         [HttpPost()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post([FromBody] ModelsDto.ComandaDto comanda)
         {
             try
@@ -38,14 +43,15 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Por favor completar los campos");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Post");
                 throw;
             }
         }
 
         [HttpGet("{idComanda}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Get(Int32 idComanda)
         {
             try
@@ -67,14 +73,15 @@ namespace LaboAppWebV1._0._0.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }
 
         [HttpGet()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Get()
         {
             try
@@ -93,9 +100,9 @@ namespace LaboAppWebV1._0._0.Controllers
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }

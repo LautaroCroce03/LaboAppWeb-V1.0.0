@@ -6,33 +6,32 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Empleado: IEmpleadoBusiness
     {
-		private readonly IEmpleadoDataAccess _empleadoData;
+        private ILogger<Empleado> _logger;
+        private readonly IEmpleadoDataAccess _empleadoData;
         private readonly IMapper _mapper;
-        public Empleado(IEmpleadoDataAccess empleadoData, IMapper mapper)
+        private readonly IEncriptar _encriptar;
+
+        public Empleado(ILogger<Empleado> logger, IEmpleadoDataAccess empleadoData, IMapper mapper, IEncriptar encriptar)
         {
+            _logger = logger;
             _empleadoData = empleadoData;
             _mapper = mapper;
+            _encriptar = encriptar;
         }
 
         public async Task<int> AgregarAsync(EmpleadoDto empleadoDto)
         {
             try
             {
-                //var _emp = new Models.Empleado();
-                //_emp.Usuario = empleadoDto.Usuario;
-                //_emp.Nombre = empleadoDto.Nombre;
-                //_emp.IdRol = empleadoDto.IdRol;
-                //_emp.IdSector = empleadoDto.IdSector;
-                //_emp.Password = empleadoDto.Password;
-
                 var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
 
                 return await _empleadoData.AgregarAsync(_empleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -66,9 +65,9 @@ namespace LaboAppWebV1._0._0.Business
                     return empleadoDtos;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -80,9 +79,9 @@ namespace LaboAppWebV1._0._0.Business
                 return await _empleadoData.ExisteAsync(codEmpleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteAsync");
                 throw;
             }
         }
@@ -97,9 +96,50 @@ namespace LaboAppWebV1._0._0.Business
                 return await _empleadoData.AgregarAsync(_empleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ActualizarAsync");
+                throw;
+            }
+        }
 
+        public async Task<bool> ExisteLoginAsync(EmpleadoDto empleadoDto)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
+                return await _empleadoData.ExisteLoginAsync(_empleado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExisteLoginAsync");
+                throw;
+            }
+        }
+
+        public async Task<EmpleadoListDto> EmpleadoLoginAsync(EmpleadoDto empleadoDto)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
+                var _empleadoLogin = await _empleadoData.EmpleadoLoginAsync(_empleado);
+
+                if (_empleadoLogin != null)
+                {
+                    var _loginEmpleado = _mapper.Map<ModelsDto.EmpleadoListDto>(_empleadoLogin);
+                    return _loginEmpleado;
+                }
+                else 
+                {
+                    return null;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "EmpleadoLoginAsync");
                 throw;
             }
         }

@@ -1,17 +1,70 @@
 using LaboAppWebV1._0._0.DataAccess;
 using LaboAppWebV1._0._0.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Serilog;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
+// Configurar Serilog
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
+builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "LaboAppWeb", Version = "v1" });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        Description = "Autorizacion JWT esquema. \r\n\r\n Escribe 'Bearer' [espacio] y escribe el token proporcionado.\r\n\r\nExample: \"Bearer 12345abcdef\"",
+        Name = "Authorization",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer"
+    });
 
+    c.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                            new OpenApiSecurityScheme
+                            {
+                                Reference = new OpenApiReference
+                                {
+                                    Type = ReferenceType.SecurityScheme,
+                                    Id = "Bearer"
+                                },
+                                Scheme = "oauth2",
+                                Name = "Bearer",
+                                In = ParameterLocation.Header,
 
+                            },
+                        new List<string>()
+                    }
+                });
+
+});
+
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(option =>
+    {
+        option.TokenValidationParameters = new TokenValidationParameters()
+        {
+            ValidateIssuer = false,
+            ValidateAudience = false,
+            ValidateLifetime = true, //Tiempo de vida de un token
+            ValidateIssuerSigningKey = true, //Validar llave de firma del emisor
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["jwtKey"]!)),//Llave secreta de token
+            ClockSkew = TimeSpan.Zero,// Es para no tener errores
+        };
+    });
 
 ConfigureServices(builder.Services, builder.Configuration);
 
@@ -58,6 +111,10 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IPedidoDataAccess, LaboAppWebV1._0._0.DataAccess.Pedido>();
     services.AddScoped<IComandaDataAccess, LaboAppWebV1._0._0.DataAccess.Comanda>();
     services.AddScoped<IProductoDataAccess, LaboAppWebV1._0._0.DataAccess.Producto>();
+
+    services.AddScoped<IEncriptar, LaboAppWebV1._0._0.Business.Encriptar>();
+    services.AddScoped<ITokenJWT, LaboAppWebV1._0._0.Business.TokenJWT>();
+    services.AddScoped<ILogin, LaboAppWebV1._0._0.Business.Login>();
 
     services.AddAutoMapper(typeof(LaboAppWebV1._0._0.Mappers.MappersP));
 }

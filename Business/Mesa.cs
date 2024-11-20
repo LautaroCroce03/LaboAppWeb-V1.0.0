@@ -5,10 +5,13 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Mesa: IMesaBusiness
     {
+        private ILogger<Mesa> _logger;
         private readonly IMesaDataAccess _mesaData;
         private readonly IMapper _mapper;
-        public Mesa(IMesaDataAccess mesaData, IMapper mapper)
+
+        public Mesa(ILogger<Mesa> logger, IMesaDataAccess mesaData, IMapper mapper)
         {
+            _logger = logger;
             _mesaData = mesaData;
             _mapper = mapper;
         }
@@ -22,9 +25,9 @@ namespace LaboAppWebV1._0._0.Business
 
                 return await _mesaData.AgregarAsync(_mesa);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -48,9 +51,9 @@ namespace LaboAppWebV1._0._0.Business
                     return _mesaLists;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -61,9 +64,9 @@ namespace LaboAppWebV1._0._0.Business
             {
                 return await _mesaData.ExisteAsync(idMesa);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteAsync");
                 throw;
             }
         }
@@ -77,9 +80,9 @@ namespace LaboAppWebV1._0._0.Business
 
                 return await _mesaData.ActualizarAsync(_mesa);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
         }

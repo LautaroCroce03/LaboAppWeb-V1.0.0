@@ -6,10 +6,13 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Rol: IRolBusiness
     {
+        private ILogger<Rol> _logger;
         private readonly IRolDataAccess _rolDataAccess;
         private readonly IMapper _mapper;
-        public Rol(IRolDataAccess rolDataAccess, IMapper mapper)
+
+        public Rol(ILogger<Rol> logger, IRolDataAccess rolDataAccess, IMapper mapper)
         {
+            _logger = logger;
             _rolDataAccess = rolDataAccess;
             _mapper = mapper;
         }
@@ -23,10 +26,10 @@ namespace LaboAppWebV1._0._0.Business
                 return await _rolDataAccess.AgregarAsync(_rol);
 
             }
-			catch (Exception)
+			catch (Exception ex)
 			{
-
-				throw;
+                _logger.LogError(ex, "AgregarAsync");
+                throw;
 			}
         }
         public async Task<List<RolListDto>> ListadoAsync()
@@ -47,9 +50,9 @@ namespace LaboAppWebV1._0._0.Business
                     return rolListDtos;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -60,9 +63,9 @@ namespace LaboAppWebV1._0._0.Business
             {
                 return await _rolDataAccess.ExisteIdAsync(idRol);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteId");
                 throw;
             }
         }

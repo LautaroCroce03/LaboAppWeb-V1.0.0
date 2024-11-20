@@ -1,4 +1,6 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
@@ -7,14 +9,17 @@ namespace LaboAppWebV1._0._0.Controllers
     [ApiController]
     public class RolController : ControllerBase
     {
+        private ILogger<RolController> _logger;
         private readonly IRolBusiness _rolBusiness;
 
-        public RolController(IRolBusiness rolBusiness)
+        public RolController(ILogger<RolController> logger, IRolBusiness rolBusiness)
         {
+            _logger = logger;
             _rolBusiness = rolBusiness;
         }
 
         [HttpPost()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Post([FromBody] ModelsDto.RolDto rolDto)
         {
             try
@@ -30,13 +35,14 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Error al realizar el alta");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Post");
                 throw;
             }
         }
         [HttpGet()]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Get()
         {
             try
@@ -52,9 +58,9 @@ namespace LaboAppWebV1._0._0.Controllers
                     return BadRequest("Error al realizar el alta");
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "Get");
                 throw;
             }
         }
