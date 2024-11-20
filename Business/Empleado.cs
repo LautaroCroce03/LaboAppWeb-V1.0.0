@@ -8,24 +8,20 @@ namespace LaboAppWebV1._0._0.Business
     {
 		private readonly IEmpleadoDataAccess _empleadoData;
         private readonly IMapper _mapper;
-        public Empleado(IEmpleadoDataAccess empleadoData, IMapper mapper)
+        private readonly IEncriptar _encriptar;
+        public Empleado(IEmpleadoDataAccess empleadoData, IMapper mapper, IEncriptar encriptar)
         {
             _empleadoData = empleadoData;
             _mapper = mapper;
+            _encriptar = encriptar;
         }
 
         public async Task<int> AgregarAsync(EmpleadoDto empleadoDto)
         {
             try
             {
-                //var _emp = new Models.Empleado();
-                //_emp.Usuario = empleadoDto.Usuario;
-                //_emp.Nombre = empleadoDto.Nombre;
-                //_emp.IdRol = empleadoDto.IdRol;
-                //_emp.IdSector = empleadoDto.IdSector;
-                //_emp.Password = empleadoDto.Password;
-
                 var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
 
                 return await _empleadoData.AgregarAsync(_empleado);
 
@@ -95,6 +91,47 @@ namespace LaboAppWebV1._0._0.Business
                 _empleado.IdEmpleado = codEmpleado;
 
                 return await _empleadoData.AgregarAsync(_empleado);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteLoginAsync(EmpleadoDto empleadoDto)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
+                return await _empleadoData.ExisteLoginAsync(_empleado);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<EmpleadoListDto> EmpleadoLoginAsync(EmpleadoDto empleadoDto)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleadoDto);
+                _empleado.Password = _encriptar.Entrada(_empleado.Password);
+                var _empleadoLogin = await _empleadoData.EmpleadoLoginAsync(_empleado);
+
+                if (_empleadoLogin != null)
+                {
+                    var _loginEmpleado = _mapper.Map<ModelsDto.EmpleadoListDto>(_empleadoLogin);
+                    return _loginEmpleado;
+                }
+                else 
+                {
+                    return null;
+                }
 
             }
             catch (Exception)
