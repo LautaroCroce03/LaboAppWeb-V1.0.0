@@ -1,5 +1,6 @@
 using LaboAppWebV1._0._0.DataAccess;
 using LaboAppWebV1._0._0.IServices;
+using LaboAppWebV1._0._0.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -14,6 +15,10 @@ Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("logs/log.txt", rollingInterval: RollingInterval.Day)
     .CreateLogger();
+
+
+
+
 builder.Host.UseSerilog();
 
 builder.Services.AddControllers();
@@ -69,6 +74,9 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 ConfigureServices(builder.Services, builder.Configuration);
 
 var app = builder.Build();
+
+app.UseSerilogRequestLogging(); // Middleware para registrar solicitudes básicas
+app.UseMiddleware<RequestResponseLoggingMiddleware>(); // Middleware personalizado
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
