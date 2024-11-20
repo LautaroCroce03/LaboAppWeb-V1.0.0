@@ -5,11 +5,13 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Comanda : IComandaBusiness
     {
-		private readonly IComandaDataAccess _comandaDataAccess;
+        private ILogger<Comanda> _logger;
+        private readonly IComandaDataAccess _comandaDataAccess;
         private readonly IPedidoBusiness _pedidoBusiness;
-        
-        public Comanda(IComandaDataAccess comandaDataAccess, IPedidoBusiness pedidoBusiness)
+
+        public Comanda(ILogger<Comanda> logger, IComandaDataAccess comandaDataAccess, IPedidoBusiness pedidoBusiness)
         {
+            _logger = logger;
             _comandaDataAccess = comandaDataAccess;
             _pedidoBusiness = pedidoBusiness;
         }
@@ -58,10 +60,10 @@ namespace LaboAppWebV1._0._0.Business
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
 			{
-
-				throw;
+                _logger.LogError(ex, "AgregarAsync");
+                throw;
 			}
         }
 
@@ -87,9 +89,9 @@ namespace LaboAppWebV1._0._0.Business
                     return null;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -123,9 +125,9 @@ namespace LaboAppWebV1._0._0.Business
                 return comandaDetalleDtos;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }

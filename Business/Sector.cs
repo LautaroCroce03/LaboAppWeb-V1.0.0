@@ -5,12 +5,15 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Sector: ISectorBusiness
     {
-		private readonly ISectorDataAccess _sectorDataAccess;
+        private ILogger<Sector> _logger;
+        private readonly ISectorDataAccess _sectorDataAccess;
         private readonly IMapper _mapper;
-        public Sector(ISectorDataAccess sectorDataAccess, IMapper mapper)
+
+        public Sector(ILogger<Sector> logger, ISectorDataAccess sectorDataAccess, IMapper mapper)
         {
+            _logger = logger;
             _sectorDataAccess = sectorDataAccess;
-            _mapper = mapper;   
+            _mapper = mapper;
         }
 
         public async Task<Int32> AgregarAsync(ModelsDto.SectorDto sectorDto)
@@ -21,10 +24,10 @@ namespace LaboAppWebV1._0._0.Business
                 return await _sectorDataAccess.AgregarAsync(_sector);
 
             }
-			catch (Exception)
+			catch (Exception ex)
 			{
-
-				throw;
+                _logger.LogError(ex, "AgregarAsync");
+                throw;
 			}
         }
         public async Task<List<ModelsDto.SectorListDto>> ListadoAsync()
@@ -47,9 +50,9 @@ namespace LaboAppWebV1._0._0.Business
                 return sectorDtosList;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -60,9 +63,9 @@ namespace LaboAppWebV1._0._0.Business
             {
                 return await _sectorDataAccess.ExisteId(idSector);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteId");
                 throw;
             }
         }

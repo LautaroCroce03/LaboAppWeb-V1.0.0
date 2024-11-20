@@ -36,7 +36,6 @@ namespace LaboAppWebV1._0._0.Business
 
                 var _historia = new ModelsDto.TokenJwtDto
                 {
-                    RefreshToken = GenerarJwt(usuario, expiracionRefreshToken, "false", "true").Token,
                     Token = GenerarJwt(usuario, expiracionToken, "true", "false").Token
                 };
 
@@ -47,7 +46,6 @@ namespace LaboAppWebV1._0._0.Business
                     return new TokenJwtDto
                     {
                         Token = _historia.Token,
-                        RefreshToken = _historia.RefreshToken,
                         Expiration = expiracionToken.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'")
                     };
                 }
@@ -58,7 +56,7 @@ namespace LaboAppWebV1._0._0.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "TokenJWT-GenerarLoginAsync");
+                _logger.LogError(ex, "GenerarLoginAsync");
                 throw;
             }
 
@@ -75,7 +73,6 @@ namespace LaboAppWebV1._0._0.Business
 
                 var _historia = new ModelsDto.TokenJwtDto
                 {
-                    RefreshToken = GenerarJwt(usuario, expiracionRefreshToken, "false", "true").Token,
                     Token = GenerarJwt(usuario, expiracionToken, "true", "false").Token
                 };
 
@@ -85,7 +82,6 @@ namespace LaboAppWebV1._0._0.Business
                     return new TokenJwtDto
                     {
                         Token = _historia.Token,
-                        RefreshToken = _historia.RefreshToken,
                         Expiration = expiracionToken.ToString("yyyy-MM-dd'T'HH:mm:ss'Z'")
                     };
                 }
@@ -96,7 +92,7 @@ namespace LaboAppWebV1._0._0.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "TokenJWT-GenerarRefreshAsync");
+                _logger.LogError(ex, "GenerarRefreshAsync");
 
                 throw;
             }
@@ -148,7 +144,7 @@ namespace LaboAppWebV1._0._0.Business
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "TokenJWT-GenerarJwt");
+                _logger.LogError(ex, "GenerarJwt");
 
                 throw;
             }

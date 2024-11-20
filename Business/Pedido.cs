@@ -6,11 +6,13 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Pedido : IPedidoBusiness
     {
+        private ILogger<Pedido> _logger;
         private readonly IPedidoDataAccess _pedidoDataAccess;
         private readonly IMapper _mapper;
 
-        public Pedido(IPedidoDataAccess pedidoDataAccess, IMapper mapper)
+        public Pedido(ILogger<Pedido> logger, IPedidoDataAccess pedidoDataAccess, IMapper mapper)
         {
+            _logger = logger;
             _pedidoDataAccess = pedidoDataAccess;
             _mapper = mapper;
         }
@@ -31,9 +33,9 @@ namespace LaboAppWebV1._0._0.Business
 
                 return await _pedidoDataAccess.AgregarAsync(_pedido);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -54,9 +56,9 @@ namespace LaboAppWebV1._0._0.Business
                 return await _pedidoDataAccess.AgregarAsync(_pedido);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -67,9 +69,9 @@ namespace LaboAppWebV1._0._0.Business
             {
                 return await _pedidoDataAccess.ListadoAsync(idComanda);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }

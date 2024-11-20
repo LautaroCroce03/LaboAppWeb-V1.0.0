@@ -6,11 +6,14 @@ namespace LaboAppWebV1._0._0.Business
 {
     public class Empleado: IEmpleadoBusiness
     {
-		private readonly IEmpleadoDataAccess _empleadoData;
+        private ILogger<Empleado> _logger;
+        private readonly IEmpleadoDataAccess _empleadoData;
         private readonly IMapper _mapper;
         private readonly IEncriptar _encriptar;
-        public Empleado(IEmpleadoDataAccess empleadoData, IMapper mapper, IEncriptar encriptar)
+
+        public Empleado(ILogger<Empleado> logger, IEmpleadoDataAccess empleadoData, IMapper mapper, IEncriptar encriptar)
         {
+            _logger = logger;
             _empleadoData = empleadoData;
             _mapper = mapper;
             _encriptar = encriptar;
@@ -26,9 +29,9 @@ namespace LaboAppWebV1._0._0.Business
                 return await _empleadoData.AgregarAsync(_empleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -62,9 +65,9 @@ namespace LaboAppWebV1._0._0.Business
                     return empleadoDtos;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -76,9 +79,9 @@ namespace LaboAppWebV1._0._0.Business
                 return await _empleadoData.ExisteAsync(codEmpleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteAsync");
                 throw;
             }
         }
@@ -93,9 +96,9 @@ namespace LaboAppWebV1._0._0.Business
                 return await _empleadoData.AgregarAsync(_empleado);
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
         }
@@ -108,9 +111,9 @@ namespace LaboAppWebV1._0._0.Business
                 _empleado.Password = _encriptar.Entrada(_empleado.Password);
                 return await _empleadoData.ExisteLoginAsync(_empleado);
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteLoginAsync");
                 throw;
             }
         }
@@ -134,9 +137,9 @@ namespace LaboAppWebV1._0._0.Business
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "EmpleadoLoginAsync");
                 throw;
             }
         }
