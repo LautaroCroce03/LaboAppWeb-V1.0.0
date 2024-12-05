@@ -76,5 +76,40 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw new Exception("Ocurrió un error al obtener el listado de comandas.", ex);
             }
         }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var empleado = _laboAppWebV1Context.Empleados.Find(id);
+                if (empleado != null)
+                {
+                    _laboAppWebV1Context.Empleados.Remove(empleado);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+        public async Task UpdateAsync(Models.Comanda comanda)
+        {
+            try
+            {
+                _laboAppWebV1Context.Comandas.Update(comanda);
+                await _laboAppWebV1Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+
+        }
+        public IEnumerable<Models.Empleado> GetAll() => _laboAppWebV1Context.Empleados.ToList();
+
+        public Models.Empleado GetById(int id) => _laboAppWebV1Context.Empleados.Find(id);
     }
 }

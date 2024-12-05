@@ -13,5 +13,7 @@ namespace LaboAppWebV1._0._0.IServices
         Task<bool> AgregarAsync(Models.Pedido pedido);
         Task<bool> AgregarAsync(List<Models.Pedido> pedido);
         Task<List<ModelsDto.PedidoListDto>> ListadoAsync(Int32 idComanda);
+        Task UpdateAsync(Models.Pedido pedido);
+        Task DeleteAsync(int id);
     }
 }

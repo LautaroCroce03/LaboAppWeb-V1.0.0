@@ -87,5 +87,37 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task UpdateAsync(Models.Mesa mesa)
+        {
+            try
+            {
+                _laboAppWebV1Context.Mesas.Update(mesa);
+                await _laboAppWebV1Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var mesa = _laboAppWebV1Context.Mesas.Find(id);
+                if (mesa != null)
+                {
+                    _laboAppWebV1Context.Mesas.Remove(mesa);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

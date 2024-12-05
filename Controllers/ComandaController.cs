@@ -45,8 +45,8 @@ namespace LaboAppWebV1._0._0.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Post");
-                throw;
+                _logger.LogError(ex, "Error al procesar la comanda.");
+                return BadRequest("Error al procesar la comanda.");
             }
         }
 
@@ -75,8 +75,8 @@ namespace LaboAppWebV1._0._0.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Get");
-                throw;
+                _logger.LogError(ex, "Error al procesar la comanda.");
+                return BadRequest("Error al procesar la comanda.");
             }
         }
 

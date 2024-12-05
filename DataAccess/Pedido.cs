@@ -80,5 +80,37 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw;
             }
         }
+
+        public async Task UpdateAsync(Models.Pedido pedido)
+        {
+            try
+            {
+                _laboAppWebV1Context.Pedidos.Update(pedido);
+                await _laboAppWebV1Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var pedido = _laboAppWebV1Context.Pedidos.Find(id);
+                if (pedido != null)
+                {
+                    _laboAppWebV1Context.Pedidos.Remove(pedido);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
