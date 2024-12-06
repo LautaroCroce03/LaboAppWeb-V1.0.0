@@ -143,5 +143,33 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task UpdateAsync(EmpleadoDto empleado)
+        {
+            try
+            {
+                var _empleado = _mapper.Map<Models.Empleado>(empleado);
+
+                await _empleadoData.UpdateAsync(_empleado);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "EmpleadoLoginAsync");
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                await _empleadoData.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LaboAppWebV1._0._0.IServices;
+using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
 {
@@ -85,6 +86,35 @@ namespace LaboAppWebV1._0._0.Business
                 _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
+        }
+
+        public async Task UpdateAsync(MesaListDto mesaDto)
+        {
+            try
+            {
+                var _mesa = _mapper.Map<Models.Mesa>(mesaDto);
+
+                await _mesaData.ActualizarAsync(_mesa);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ActualizarAsync");
+
+            }
+        }
+
+        public async Task DeleteAsync(int id) 
+        {
+            try
+            {
+                await _mesaData.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+            
         }
     }
 }

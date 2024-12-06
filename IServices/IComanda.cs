@@ -13,5 +13,8 @@
         Task<Int32> AgregarAsync(ModelsDto.ComandaDto comanda);
         Task<ModelsDto.ComandaDetalleDto> ListadoAsync(Int32 idComanda);
         Task<List<ModelsDto.ComandaDetalleDto>> ListadoAsync();
+
+        Task UpdateAsync(ModelsDto.ComandaDto comanda);
+        Task DeleteAsync(int id);
     }
 }

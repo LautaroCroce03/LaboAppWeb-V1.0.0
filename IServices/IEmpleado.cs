@@ -21,5 +21,8 @@ namespace LaboAppWebV1._0._0.IServices
         Task<int> ActualizarAsync(EmpleadoDto empleadoDto, Int32 codEmpleado);
         Task<bool> ExisteLoginAsync(EmpleadoDto empleadoDto);
         Task<ModelsDto.EmpleadoListDto> EmpleadoLoginAsync(EmpleadoDto empleadoDto);
+
+        Task UpdateAsync(EmpleadoDto empleado);
+        Task DeleteAsync(int id);
     }
 }
