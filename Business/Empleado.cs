@@ -143,5 +143,27 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
-    }
+
+        public async Task<bool> EliminarAsync(int codEmpleado)
+        {
+            try
+            {
+                if (await _empleadoData.ExisteAsync(codEmpleado))
+                {
+                    return await _empleadoData.EliminarAsync(codEmpleado);
+                }
+                else
+                {
+                    _logger.LogWarning($"Empleado con ID {codEmpleado} no existe.");
+                    return false;
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "EliminarAsync");
+                throw;
+            }
+
+        }
+  }
 }

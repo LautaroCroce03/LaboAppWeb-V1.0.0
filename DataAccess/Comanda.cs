@@ -76,5 +76,23 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw new Exception("Ocurrió un error al obtener el listado de comandas.", ex);
             }
         }
+        public async Task<bool> EliminarAsync(int idComanda)
+        {
+            try
+            {
+                var comanda = await _laboAppWebV1Context.Comandas.FindAsync(idComanda);
+                if (comanda != null)
+                {
+                    _laboAppWebV1Context.Comandas.Remove(comanda);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar la comanda", ex);
+            }
+        }
     }
 }

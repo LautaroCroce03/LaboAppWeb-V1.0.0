@@ -10,6 +10,7 @@ namespace LaboAppWebV1._0._0.IServices
         Task<Int32> ActualizarAsync(Models.Empleado empleado);
         Task<bool> ExisteLoginAsync(Models.Empleado empleado);
         Task<Models.Empleado> EmpleadoLoginAsync(Models.Empleado empleado);
+        Task<bool> EliminarAsync(Int32 codEmpleado);
     }
     public interface IEmpleadoBusiness
     {
@@ -19,5 +20,6 @@ namespace LaboAppWebV1._0._0.IServices
         Task<int> ActualizarAsync(EmpleadoDto empleadoDto, Int32 codEmpleado);
         Task<bool> ExisteLoginAsync(EmpleadoDto empleadoDto);
         Task<ModelsDto.EmpleadoListDto> EmpleadoLoginAsync(EmpleadoDto empleadoDto);
+        Task<bool> EliminarAsync(Int32 codEmpleado);
     }
 }

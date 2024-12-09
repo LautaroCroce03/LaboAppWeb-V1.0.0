@@ -96,5 +96,24 @@ namespace LaboAppWebV1._0._0.Business
             }
         }
 
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var producto = await _productoData.ExisteAsync(id);
+                if (producto == null)
+                {
+                    _logger.LogWarning($"Producto con ID {id} no existe.");
+                    return false;
+                }
+
+                return await _productoData.EliminarAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "EliminarAsync");
+                throw;
+            }
+        }
     }
 }

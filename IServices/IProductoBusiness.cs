@@ -10,6 +10,7 @@ namespace LaboAppWebV1._0._0.IServices
         Task<List<Models.Producto>> ListadoAsync();
         Task<bool> ActualizarAsync(Models.Producto producto);
         Task<Models.Producto> ExisteAsync(int id);
+        Task<bool> EliminarAsync(int id);
     }
 
     public interface IProductoBusiness
@@ -17,5 +18,6 @@ namespace LaboAppWebV1._0._0.IServices
         Task<int> AgregarAsync(ProductoDto productoDto);
         Task<List<ProductoDto>> ListadoAsync();
         Task<bool> ActualizarAsync(ProductoDto productoDto);
+        Task<bool> EliminarAsync(int id);
     }
 }

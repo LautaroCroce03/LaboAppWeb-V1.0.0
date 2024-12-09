@@ -112,5 +112,33 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                if (!await _empleadoBusiness.ExisteAsync(id))
+                {
+                    return BadRequest($"No existe un empleado con ID {id}");
+                }
+
+                var eliminado = await _empleadoBusiness.EliminarAsync(id);
+
+                if (eliminado)
+                {
+                    return Ok($"El empleado con ID {id} fue eliminado correctamente.");
+                }
+                else
+                {
+                    return BadRequest($"No se pudo eliminar el empleado con ID {id}");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Delete");
+                throw;
+            }
+        }
     }
 }

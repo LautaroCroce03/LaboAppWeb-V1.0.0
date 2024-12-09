@@ -62,15 +62,28 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        // Asegúrate de que también tengas un método para obtener el producto por ID
         public async Task<Models.Producto> ExisteAsync(int id)
         {
             return await _laboAppWebV1Context.Productos.FindAsync(id);
         }
 
-
-
-
-
+        public async Task<bool> EliminarAsync(int id)
+        {
+            try
+            {
+                var producto = await _laboAppWebV1Context.Productos.FindAsync(id);
+                if (producto != null)
+                {
+                    _laboAppWebV1Context.Productos.Remove(producto);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                    return true;
+                }
+                return false;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el producto", ex);
+            }
+        }
     }
 }

@@ -106,5 +106,28 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+
+        [HttpDelete("{idComanda}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Delete(int idComanda)
+        {
+            try
+            {
+                var result = await _comandaBusiness.EliminarAsync(idComanda);
+                if (result)
+                {
+                    return Ok($"Comanda con ID {idComanda} eliminada correctamente.");
+                }
+                else
+                {
+                    return NotFound($"Comanda con ID {idComanda} no encontrada.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Delete");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }

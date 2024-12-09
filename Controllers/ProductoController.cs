@@ -104,5 +104,27 @@ namespace LaboAppWebV1._0._0.Controllers
             }
         }
 
+        [HttpDelete("{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> Delete(int id)
+        {
+            try
+            {
+                var result = await _productoBusiness.EliminarAsync(id);
+                if (result)
+                {
+                    return Ok($"Producto con ID {id} eliminado correctamente.");
+                }
+                else
+                {
+                    return NotFound($"Producto con ID {id} no encontrado.");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Delete");
+                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+            }
+        }
     }
 }

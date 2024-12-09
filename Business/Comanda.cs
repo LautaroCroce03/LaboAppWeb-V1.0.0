@@ -131,5 +131,24 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+        public async Task<bool> EliminarAsync(int idComanda)
+        {
+            try
+            {
+                var comanda = await _comandaDataAccess.ListadoAsync(idComanda);
+                if (comanda == null)
+                {
+                    _logger.LogWarning($"Comanda con ID {idComanda} no existe.");
+                    return false;
+                }
+
+                return await _comandaDataAccess.EliminarAsync(idComanda);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "EliminarAsync");
+                throw;
+            }
+        }
     }
 }
