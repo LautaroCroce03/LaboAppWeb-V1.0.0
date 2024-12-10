@@ -22,6 +22,7 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
+                throw new InvalidOperationException("Se ha producido un error al procesar la comanda.");
 
                 if ((!string.IsNullOrEmpty(userManager.Usuario)) && (!string.IsNullOrEmpty(userManager.Password)))
                 {

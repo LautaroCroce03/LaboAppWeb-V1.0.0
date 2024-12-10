@@ -76,7 +76,13 @@ ConfigureServices(builder.Services, builder.Configuration);
 var app = builder.Build();
 
 app.UseSerilogRequestLogging(); // Middleware para registrar solicitudes básicas
+
 app.UseMiddleware<RequestResponseLoggingMiddleware>(); // Middleware personalizado
+// Usar el middleware para manejo de excepciones
+app.UseMiddleware<ExceptionHandlingMiddleware>();
+
+// Usar el middleware de TraceId
+app.UseMiddleware<TraceIdMiddleware>();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

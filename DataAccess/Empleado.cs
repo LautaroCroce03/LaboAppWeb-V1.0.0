@@ -109,15 +109,38 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
+
         public async Task<bool> EliminarAsync(Int32 codEmpleado)
         {
             try
             {
                 var empleado = await _laboAppWebV1Context.Empleados.FindAsync(codEmpleado);
+
+        public async Task UpdateAsync(Models.Empleado empleado)
+        {
+            try
+            {
+                _laboAppWebV1Context.Empleados.Update(empleado);
+                await _laboAppWebV1Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var empleado = _laboAppWebV1Context.Empleados.Find(id);
+
                 if (empleado != null)
                 {
                     _laboAppWebV1Context.Empleados.Remove(empleado);
                     await _laboAppWebV1Context.SaveChangesAsync();
+
                     return true;
                 }
                 return false;
@@ -125,6 +148,12 @@ namespace LaboAppWebV1._0._0.DataAccess
             catch (Exception ex)
             {
                 throw new Exception("Error al eliminar el empleado", ex);
+                }
+            }
+            catch (Exception)
+            {
+
+                throw;
             }
         }
     }
