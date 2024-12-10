@@ -165,9 +165,6 @@ namespace LaboAppWebV1._0._0.Business
             }
 
         }
-  }
-}
-
         public async Task UpdateAsync(EmpleadoDto empleado)
         {
             try
@@ -197,3 +194,5 @@ namespace LaboAppWebV1._0._0.Business
         }
     }
 }
+
+       

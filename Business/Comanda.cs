@@ -149,15 +149,16 @@ namespace LaboAppWebV1._0._0.Business
             catch (Exception ex)
             {
                 _logger.LogError(ex, "EliminarAsync");
-
-
+                return false;
+            }
+        }
         public async Task UpdateAsync(ModelsDto.ComandaDto comanda)
         {
             try
             {
                 var _comanda = _mapper.Map<Models.Comanda>(comanda);
 
-               await  _comandaDataAccess.UpdateAsync(_comanda);
+                await _comandaDataAccess.UpdateAsync(_comanda);
 
             }
             catch (Exception)
@@ -180,5 +181,6 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
     }
 }

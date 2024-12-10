@@ -139,26 +139,7 @@ namespace LaboAppWebV1._0._0.Controllers
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Delete");
-                //Validamos si existe el empleado
-                if (!await _empleadoBusiness.ExisteAsync(id))
-                {
-                    return BadRequest("No existe el empleado ingresado");
-                }
-                else if (!ModelState.IsValid)
-                {
-                    // Si la validación falla, devolver una respuesta con errores
-                    return BadRequest(ModelState);
-                }
-
-
-                await _empleadoBusiness.DeleteAsync(id);
-
-                return Ok();
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "Post");
-                throw;
+                return BadRequest($"Por favor intente mas tarde");
             }
         }
         [HttpPut()]
