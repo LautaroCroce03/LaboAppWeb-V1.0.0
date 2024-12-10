@@ -75,5 +75,32 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task UpdateAsync(PedidoListDto pedido)
+        {
+            try
+            {
+                var _pedido = _mapper.Map<Models.Pedido>(pedido);
+                await _pedidoDataAccess.UpdateAsync(_pedido);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                await _pedidoDataAccess.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

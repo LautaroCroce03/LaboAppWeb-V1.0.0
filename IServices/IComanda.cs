@@ -5,7 +5,12 @@
         Task<Int32> AgregarAsync(Models.Comanda comanda);
         Task<ModelsDto.ComandaDetalleDto> ListadoAsync(Int32 idComanda);
         Task<List<ModelsDto.ComandaDetalleDto>> ListadoAsync();
+
         Task<bool> EliminarAsync(int idComanda);
+
+        Task UpdateAsync(Models.Comanda comanda);
+        Task DeleteAsync(int id);
+
     }
     public interface IComandaBusiness
     {
@@ -13,5 +18,8 @@
         Task<ModelsDto.ComandaDetalleDto> ListadoAsync(Int32 idComanda);
         Task<List<ModelsDto.ComandaDetalleDto>> ListadoAsync();
         Task<bool> EliminarAsync(int idComanda);
+        Task UpdateAsync(ModelsDto.ComandaDto comanda);
+        Task DeleteAsync(int id);
+
     }
 }

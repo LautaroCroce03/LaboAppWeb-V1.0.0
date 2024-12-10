@@ -1,4 +1,5 @@
-﻿using LaboAppWebV1._0._0.IServices;
+﻿using AutoMapper;
+using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -8,12 +9,13 @@ namespace LaboAppWebV1._0._0.Business
         private ILogger<Comanda> _logger;
         private readonly IComandaDataAccess _comandaDataAccess;
         private readonly IPedidoBusiness _pedidoBusiness;
-
-        public Comanda(ILogger<Comanda> logger, IComandaDataAccess comandaDataAccess, IPedidoBusiness pedidoBusiness)
+        private readonly IMapper _mapper;
+        public Comanda(ILogger<Comanda> logger, IComandaDataAccess comandaDataAccess, IPedidoBusiness pedidoBusiness, IMapper mapper)
         {
             _logger = logger;
             _comandaDataAccess = comandaDataAccess;
             _pedidoBusiness = pedidoBusiness;
+            _mapper = mapper;
         }
 
         public async Task<int> AgregarAsync(ComandaDto comanda)
@@ -147,8 +149,38 @@ namespace LaboAppWebV1._0._0.Business
             catch (Exception ex)
             {
                 _logger.LogError(ex, "EliminarAsync");
+                return false;
+            }
+        }
+        public async Task UpdateAsync(ModelsDto.ComandaDto comanda)
+        {
+            try
+            {
+                var _comanda = _mapper.Map<Models.Comanda>(comanda);
+
+                await _comandaDataAccess.UpdateAsync(_comanda);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            };
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                await _comandaDataAccess.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+
                 throw;
             }
         }
+
     }
 }

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
-    public class Empleado: IEmpleadoDataAccess
+    public class Empleado : IEmpleadoDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
 
@@ -54,7 +54,7 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                return await _laboAppWebV1Context.Empleados.AnyAsync(e=> e.IdEmpleado.Equals(codEmpleado));
+                return await _laboAppWebV1Context.Empleados.AnyAsync(e => e.IdEmpleado.Equals(codEmpleado));
 
             }
             catch (Exception)
@@ -85,7 +85,7 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             try
             {
-                return await _laboAppWebV1Context.Empleados.AnyAsync(l => l.Password.Equals(empleado.Password) && 
+                return await _laboAppWebV1Context.Empleados.AnyAsync(l => l.Password.Equals(empleado.Password) &&
                                     l.Usuario.Equals(empleado.Usuario));
             }
             catch (Exception)
@@ -109,6 +109,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
+
         public async Task<bool> EliminarAsync(Int32 codEmpleado)
         {
             try
@@ -118,13 +119,48 @@ namespace LaboAppWebV1._0._0.DataAccess
                 {
                     _laboAppWebV1Context.Empleados.Remove(empleado);
                     await _laboAppWebV1Context.SaveChangesAsync();
+
                     return true;
                 }
                 return false;
+
             }
             catch (Exception ex)
             {
                 throw new Exception("Error al eliminar el empleado", ex);
+
+            }
+        }
+        public async Task UpdateAsync(Models.Empleado empleado)
+        {
+            try
+            {
+                _laboAppWebV1Context.Empleados.Update(empleado);
+                await _laboAppWebV1Context.SaveChangesAsync();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task DeleteAsync(int id)
+        {
+            try
+            {
+                var empleado = _laboAppWebV1Context.Empleados.Find(id);
+
+                if (empleado != null)
+                {
+                    _laboAppWebV1Context.Empleados.Remove(empleado);
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error al eliminar el empleado", ex);
+
             }
         }
     }
