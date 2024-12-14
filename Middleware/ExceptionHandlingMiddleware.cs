@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace LaboAppWebV1._0._0.Middleware
 {
@@ -30,15 +31,17 @@ namespace LaboAppWebV1._0._0.Middleware
                 // Retornamos una respuesta amigable al cliente
                 context.Response.StatusCode = 500;  // Código de error 500 (Internal Server Error)
                 context.Response.ContentType = "application/json";
-                var errorResponse = new
+                var response = new ModelsDto.ResponseApiDto()
                 {
-                    traceId = traceId,
-                    message = "Algo salió mal. Estamos trabajando para solucionarlo.",
-                    details = "Por favor, intenta nuevamente más tarde."
+                    Type = "application/json",
+                    Status = StatusCodes.Status500InternalServerError,
+                    Title = "Error inesperado",
+                    Detail = "Por favor, intenta nuevamente más tarde.",
+                    Message = "Algo salió mal. Estamos trabajando para solucionarlo."
                 };
 
                 // Enviar la respuesta en formato JSON
-                await context.Response.WriteAsJsonAsync(errorResponse);
+                await context.Response.WriteAsJsonAsync(response);
             }
             finally
             {

@@ -10,11 +10,12 @@ namespace LaboAppWebV1._0._0.Controllers
     {
         private ILogger<LoginController> _logger;
         private readonly ILogin _login;
-
-        public LoginController(ILogger<LoginController> logger, ILogin login)
+        private readonly IResponseApi _responseApi;
+        public LoginController(ILogger<LoginController> logger, ILogin login, IResponseApi responseApi)
         {
             _logger = logger;
             _login = login;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
@@ -22,17 +23,19 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
+
                 if ((!string.IsNullOrEmpty(userManager.Usuario)) && (!string.IsNullOrEmpty(userManager.Password)))
                 {
                     var _token = await _login.ValidarAsync(userManager);
                     if (_token != null)
-                        return Ok(_token);
+    
+                        return Ok(_responseApi.Msj(200, "OK", "", HttpContext, _token));
                     else 
-                        return BadRequest("Intento de login fallido");
+                        return BadRequest(_responseApi.Msj(400, "Error Login", "Intento de login fallido", HttpContext, _token));
                 }
                 else
                 {
-                    return BadRequest("Por favor complete los campos solicitados");
+                    return BadRequest(_responseApi.Msj(400, "Error Login", "Por favor complete los campos solicitados", HttpContext, ""));
                 }
             }
             catch (System.Exception ex)

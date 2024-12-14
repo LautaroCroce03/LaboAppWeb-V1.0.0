@@ -116,6 +116,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IPedidoBusiness, LaboAppWebV1._0._0.Business.Pedido>();
     services.AddScoped<IComandaBusiness, LaboAppWebV1._0._0.Business.Comanda>();
     services.AddScoped<IProductoBusiness, LaboAppWebV1._0._0.Business.Producto>();
+    services.AddScoped<IResponseApi, LaboAppWebV1._0._0.Business.ResponseApi>();
 
     services.AddScoped<IRolDataAccess, LaboAppWebV1._0._0.DataAccess.Rol>();
     services.AddScoped<ISectorDataAccess, LaboAppWebV1._0._0.DataAccess.Sector>();

@@ -12,12 +12,13 @@ namespace LaboAppWebV1._0._0.Controllers
         private readonly ILogger<ComandaController> _logger;
         private readonly IComandaBusiness _comandaBusiness;
         private readonly IMesaBusiness _mesaBusiness;
-
-        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
+        private readonly IResponseApi _responseApi;
+        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _comandaBusiness = comandaBusiness;
             _mesaBusiness = mesaBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
