@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Mesa: IMesaDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Mesa(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Mesa> _logger;
+        public Mesa(LaboAppWebV1Context laboAppWebV1Context, ILogger<Mesa> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<Int32> AgregarAsync(Models.Mesa mesa) 
@@ -22,9 +23,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return mesa.IdMesa;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -33,7 +34,9 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                var result = await _laboAppWebV1Context.Mesas.ToListAsync();
+                var result = await _laboAppWebV1Context.Mesas
+                                    .AsNoTrackingWithIdentityResolution()
+                                    .ToListAsync();
 
                 if ((result != null) && (result.Count > 0)) 
                 {
@@ -45,8 +48,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 }
                 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -54,11 +58,13 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                return  await _laboAppWebV1Context.Mesas.AnyAsync(x=> x.IdMesa.Equals(idMesa));
+                return  await _laboAppWebV1Context.Mesas.AsNoTrackingWithIdentityResolution()
+                                .AnyAsync(x=> x.IdMesa.Equals(idMesa));
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ExisteAsync");
                 throw;
             }
         }
@@ -81,9 +87,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
         }
@@ -95,9 +101,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 _laboAppWebV1Context.Mesas.Update(mesa);
                 await _laboAppWebV1Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "UpdateAsync");
                 throw;
             }
         }
@@ -113,9 +119,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                     await _laboAppWebV1Context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "DeleteAsync");
                 throw;
             }
         }

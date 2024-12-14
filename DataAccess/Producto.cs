@@ -7,10 +7,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Producto : IProductoDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Producto(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Producto> _logger;
+        public Producto(LaboAppWebV1Context laboAppWebV1Context, ILogger<Producto> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<int> AgregarAsync(Models.Producto producto)
@@ -22,8 +23,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return producto.IdProducto;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -43,8 +45,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                     return new List<Models.Producto>();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -56,15 +59,24 @@ namespace LaboAppWebV1._0._0.DataAccess
                 await _laboAppWebV1Context.SaveChangesAsync();
                 return true;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ActualizarAsync");
                 throw;
             }
         }
 
         public async Task<Models.Producto> ExisteAsync(int id)
         {
-            return await _laboAppWebV1Context.Productos.FindAsync(id);
+            try
+            {
+                return await _laboAppWebV1Context.Productos.FindAsync(id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExisteAsync");
+                throw;
+            }
         }
 
         public async Task<bool> EliminarAsync(int id)
@@ -82,6 +94,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "EliminarAsync");
                 throw new Exception("Error al eliminar el producto", ex);
             }
         }

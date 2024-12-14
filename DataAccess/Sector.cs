@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Sector: ISectorDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Sector(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Sector> _logger;
+        public Sector(LaboAppWebV1Context laboAppWebV1Context, ILogger<Sector> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<Int32> AgregarAsync(Models.Sectore sectore)
@@ -22,9 +23,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return sectore.IdSector;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -45,8 +46,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -57,9 +59,9 @@ namespace LaboAppWebV1._0._0.DataAccess
             {
                 return await _laboAppWebV1Context.Sectores.AnyAsync(id=> id.IdSector.Equals(idSector));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteId");
                 throw;
             }
         } 

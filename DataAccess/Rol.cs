@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Rol: IRolDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Rol(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Rol> _logger;
+        public Rol(LaboAppWebV1Context laboAppWebV1Context, ILogger<Rol> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<Int32> AgregarAsync(Models.Role rol)
@@ -22,9 +23,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return rol.IdRol;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -45,8 +46,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -57,9 +59,9 @@ namespace LaboAppWebV1._0._0.DataAccess
             {
                 return await _laboAppWebV1Context.Roles.AnyAsync(id => id.IdRol.Equals(idRol));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ExisteIdAsync");
                 throw;
             }
         }

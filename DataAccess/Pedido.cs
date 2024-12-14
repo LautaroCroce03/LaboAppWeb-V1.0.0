@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Pedido: IPedidoDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Pedido(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Pedido> _logger;
+        public Pedido(LaboAppWebV1Context laboAppWebV1Context, ILogger<Pedido> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<bool> AgregarAsync(Models.Pedido pedido) 
@@ -24,9 +25,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 else 
                     return false;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -43,9 +44,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                     return false;
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -88,9 +89,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 _laboAppWebV1Context.Pedidos.Update(pedido);
                 await _laboAppWebV1Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -106,9 +107,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                     await _laboAppWebV1Context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "DeleteAsync");
                 throw;
             }
         }

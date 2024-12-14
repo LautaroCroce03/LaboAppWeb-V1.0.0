@@ -33,7 +33,8 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                var result = await _laboAppWebV1Context.EstadoMesas.ToListAsync();
+                var result = await _laboAppWebV1Context.EstadoMesas.AsNoTrackingWithIdentityResolution()
+                            .ToListAsync();
 
                 if ((result != null) && (result.Count > 0))
                 {
@@ -55,7 +56,8 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                return await _laboAppWebV1Context.EstadoMesas.AnyAsync(x => x.IdEstado.Equals(idEstado));
+                return await _laboAppWebV1Context.EstadoMesas.AsNoTrackingWithIdentityResolution()
+                            .AnyAsync(x => x.IdEstado.Equals(idEstado));
 
             }
             catch (Exception)

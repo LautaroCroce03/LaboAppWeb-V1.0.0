@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Comanda: IComandaDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Comanda(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Comanda> _logger;
+        public Comanda(LaboAppWebV1Context laboAppWebV1Context, ILogger<Comanda> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<Int32> AgregarAsync(Models.Comanda comanda) 
@@ -20,9 +21,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 await _laboAppWebV1Context.SaveChangesAsync();
                 return comanda.IdComandas;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -43,9 +44,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return await _comanda.FirstOrDefaultAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -67,11 +68,13 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (TaskCanceledException ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 // Manejar el caso de tiempo de espera o tarea cancelada
                 throw new Exception("La operación fue cancelada o expiró el tiempo de espera.", ex);
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "ListadoAsync");
                 // Capturar cualquier otra excepción
                 throw new Exception("Ocurrió un error al obtener el listado de comandas.", ex);
             }
@@ -91,6 +94,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (Exception ex)
             {
+                _logger.LogError(ex, "EliminarAsync");
                 throw new Exception("Error al eliminar la comanda", ex);
             }
         }
@@ -105,9 +109,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                     await _laboAppWebV1Context.SaveChangesAsync();
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "DeleteAsync");
                 throw;
             }
         }
@@ -118,9 +122,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 _laboAppWebV1Context.Comandas.Update(comanda);
                 await _laboAppWebV1Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogError(ex, "UpdateAsync");
                 throw;
             }
 

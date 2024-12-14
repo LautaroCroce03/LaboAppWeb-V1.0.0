@@ -6,10 +6,11 @@ namespace LaboAppWebV1._0._0.DataAccess
     public class Empleado : IEmpleadoDataAccess
     {
         private readonly LaboAppWebV1Context _laboAppWebV1Context;
-
-        public Empleado(LaboAppWebV1Context laboAppWebV1Context)
+        private readonly ILogger<Empleado> _logger;
+        public Empleado(LaboAppWebV1Context laboAppWebV1Context, ILogger<Empleado> logger)
         {
             _laboAppWebV1Context = laboAppWebV1Context;
+            _logger = logger;
         }
 
         public async Task<Int32> AgregarAsync(Models.Empleado empleado)
@@ -22,9 +23,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return empleado.IdEmpleado;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "AgregarAsync");
                 throw;
             }
         }
@@ -33,7 +34,8 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                var result = await _laboAppWebV1Context.Empleados.ToListAsync();
+                var result = await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                                .ToListAsync();
 
                 if ((result != null) && (result.Count > 0))
                 {
@@ -45,8 +47,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 }
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
+                _logger.LogDebug(ex, "ListadoAsync");
                 throw;
             }
         }
@@ -54,12 +57,13 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                return await _laboAppWebV1Context.Empleados.AnyAsync(e => e.IdEmpleado.Equals(codEmpleado));
+                return await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                            .AnyAsync(e => e.IdEmpleado.Equals(codEmpleado));
 
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "ExisteAsync");
                 throw;
             }
         }
@@ -74,9 +78,9 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 return empleado.IdEmpleado;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "ActualizarAsync");
                 throw;
             }
         }
@@ -85,12 +89,13 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             try
             {
-                return await _laboAppWebV1Context.Empleados.AnyAsync(l => l.Password.Equals(empleado.Password) &&
+                return await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                                    .AnyAsync(l => l.Password.Equals(empleado.Password) &&
                                     l.Usuario.Equals(empleado.Usuario));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "ExisteLoginAsync");
                 throw;
             }
         }
@@ -99,17 +104,31 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             try
             {
-                return await _laboAppWebV1Context.Empleados.FirstOrDefaultAsync(l => l.Password.Equals(empleado.Password) &&
+                return await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                                    .FirstOrDefaultAsync(l => l.Password.Equals(empleado.Password) &&
                                     l.Usuario.Equals(empleado.Usuario));
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "EmpleadoLoginAsync");
                 throw;
             }
         }
 
+        public async Task<Models.Empleado> EmpleadoLoginAsync(Int32 idEmpleado)
+        {
 
+            try
+            {
+                return await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                                                .FirstOrDefaultAsync(l => l.IdEmpleado.Equals(idEmpleado));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogDebug(ex, "EmpleadoLoginAsync");
+                throw;
+            }
+        }
         public async Task<bool> EliminarAsync(Int32 codEmpleado)
         {
             try
@@ -127,6 +146,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (Exception ex)
             {
+                _logger.LogDebug(ex, "EliminarAsync");
                 throw new Exception("Error al eliminar el empleado", ex);
 
             }
@@ -138,9 +158,9 @@ namespace LaboAppWebV1._0._0.DataAccess
                 _laboAppWebV1Context.Empleados.Update(empleado);
                 await _laboAppWebV1Context.SaveChangesAsync();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-
+                _logger.LogDebug(ex, "UpdateAsync");
                 throw;
             }
         }
@@ -159,6 +179,7 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
             catch (Exception ex)
             {
+                _logger.LogDebug(ex, "DeleteAsync");
                 throw new Exception("Error al eliminar el empleado", ex);
 
             }
