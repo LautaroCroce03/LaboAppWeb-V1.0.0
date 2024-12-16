@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    
     [Route("api/v1/producto")]
     [ApiController]
     public class ProductoController : ControllerBase
@@ -14,12 +13,14 @@ namespace LaboAppWebV1._0._0.Controllers
         private ILogger<ProductoController> _logger;
         private readonly IProductoBusiness _productoBusiness;
         private readonly ISectorBusiness _sectorBusiness;
+        private readonly IResponseApi _responseApi;
 
-        public ProductoController(ILogger<ProductoController> logger, IProductoBusiness productoBusiness, ISectorBusiness sectorBusiness)
+        public ProductoController(ILogger<ProductoController> logger, IProductoBusiness productoBusiness, ISectorBusiness sectorBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _productoBusiness = productoBusiness;
             _sectorBusiness = sectorBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
@@ -28,27 +29,26 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-                
                 if (!await _sectorBusiness.ExisteId(productoDto.IdSector))
                 {
-                    return BadRequest("No existe el sector ingresado");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el sector ingresado", HttpContext, null));
                 }
 
                 var result = await _productoBusiness.AgregarAsync(productoDto);
 
                 if (result > 0)
                 {
-                    return Ok("Producto agregado correctamente");
+                    return Ok(_responseApi.Msj(200, "Éxito", "Producto agregado correctamente", HttpContext, null));
                 }
                 else
                 {
-                    return BadRequest("Error al agregar el producto");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al agregar el producto", HttpContext, null));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Post");
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                return StatusCode(500, _responseApi.Msj(500, "Error", $"Error interno del servidor: {ex.Message}", HttpContext, null));
             }
         }
 
@@ -62,20 +62,19 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (productos.Count > 0)
                 {
-                    return Ok(productos);
+                    return Ok(_responseApi.Msj(200, "Éxito", "Listado de productos", HttpContext, productos));
                 }
                 else
                 {
-                    return NoContent(); 
+                    return NoContent();
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Get");
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                return StatusCode(500, _responseApi.Msj(500, "Error", $"Error interno del servidor: {ex.Message}", HttpContext, null));
             }
         }
-
 
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
@@ -84,23 +83,23 @@ namespace LaboAppWebV1._0._0.Controllers
             try
             {
                 if (id != productoDto.IdProducto)
-                    return BadRequest("El ID no coincide.");
+                    return BadRequest(_responseApi.Msj(400, "Error", "El ID no coincide.", HttpContext, null));
 
                 var result = await _productoBusiness.ActualizarAsync(productoDto);
 
                 if (result)
                 {
-                    return Ok("Producto actualizado correctamente.");
+                    return Ok(_responseApi.Msj(200, "Éxito", "Producto actualizado correctamente.", HttpContext, null));
                 }
                 else
                 {
-                    return BadRequest("Error al actualizar el producto.");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al actualizar el producto.", HttpContext, null));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Put");
-                return StatusCode(500, "Error interno del servidor.");
+                return StatusCode(500, _responseApi.Msj(500, "Error", "Error interno del servidor.", HttpContext, null));
             }
         }
 
@@ -113,17 +112,17 @@ namespace LaboAppWebV1._0._0.Controllers
                 var result = await _productoBusiness.EliminarAsync(id);
                 if (result)
                 {
-                    return Ok($"Producto con ID {id} eliminado correctamente.");
+                    return Ok(_responseApi.Msj(200, "Éxito", $"Producto con ID {id} eliminado correctamente.", HttpContext, null));
                 }
                 else
                 {
-                    return NotFound($"Producto con ID {id} no encontrado.");
+                    return NotFound(_responseApi.Msj(404, "Error", $"Producto con ID {id} no encontrado.", HttpContext, null));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Delete");
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                return StatusCode(500, _responseApi.Msj(500, "Error", $"Error interno del servidor: {ex.Message}", HttpContext, null));
             }
         }
     }

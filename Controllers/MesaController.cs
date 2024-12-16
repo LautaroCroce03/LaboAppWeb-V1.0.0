@@ -12,12 +12,14 @@ namespace LaboAppWebV1._0._0.Controllers
         private ILogger<MesaController> _logger;
         private readonly IMesaBusiness _mesaBusiness;
         private readonly IEstadoMesaBusiness _estadoMesaBusiness;
+        private readonly IResponseApi _responseApi;
 
-        public MesaController(ILogger<MesaController> logger, IMesaBusiness mesaBusiness, IEstadoMesaBusiness estadoMesaBusiness)
+        public MesaController(ILogger<MesaController> logger, IMesaBusiness mesaBusiness, IEstadoMesaBusiness estadoMesaBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _mesaBusiness = mesaBusiness;
             _estadoMesaBusiness = estadoMesaBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
@@ -30,11 +32,11 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (_result > 0)
                 {
-                    return Ok("Se agrego correctamente");
+                    return Ok(_responseApi.Msj(200, "OK", "Se agrego correctamente", HttpContext, _result));
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al realizar el alta", HttpContext, null));
                 }
             }
             catch (System.Exception ex)
@@ -43,6 +45,7 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+
         [HttpGet()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> Get()
@@ -53,11 +56,11 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (_result.Count > 0)
                 {
-                    return Ok(_result);
+                    return Ok(_responseApi.Msj(200, "OK", "Listado obtenido correctamente", HttpContext, _result));
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No hay mesas disponibles", HttpContext, null));
                 }
             }
             catch (System.Exception ex)
@@ -73,22 +76,21 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
+                if (!await _mesaBusiness.ExisteAsync(mesa.IdMesa))
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el id ingresado", HttpContext, null));
 
-                if(!await _mesaBusiness.ExisteAsync(mesa.IdMesa))
-                    return BadRequest("No existe el id ingresado");
-
-                if(!await _estadoMesaBusiness.ExisteAsync(mesa.IdEstado))
-                    return BadRequest("No existe el id ingresado");
+                if (!await _estadoMesaBusiness.ExisteAsync(mesa.IdEstado))
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el id de estado ingresado", HttpContext, null));
 
                 var _result = await _mesaBusiness.ActualizarAsync(mesa);
 
                 if (_result)
                 {
-                    return Ok("Se actualizo correctamente");
+                    return Ok(_responseApi.Msj(200, "OK", "Se actualizo correctamente", HttpContext, _result));
                 }
                 else
                 {
-                    return BadRequest("Error");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al actualizar", HttpContext, null));
                 }
             }
             catch (System.Exception ex)
