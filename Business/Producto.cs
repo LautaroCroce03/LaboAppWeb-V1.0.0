@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using LaboAppWebV1._0._0.IServices;
+﻿using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
 namespace LaboAppWebV1._0._0.Business
@@ -112,6 +110,47 @@ namespace LaboAppWebV1._0._0.Business
             catch (Exception ex)
             {
                 _logger.LogError(ex, "EliminarAsync");
+                throw;
+            }
+        }
+
+        public async Task<Int32> Disponible(Int32 idProducto) 
+        {
+            try
+            {
+                return await _productoData.DisponibleAsync(idProducto);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteAsync(Int32 idProducto)
+        {
+            try
+            {
+                return await _productoData.ExisteProductoAsync(idProducto);
+
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task ActualizarStockAsync(Int32 id, Int32 cantidad)
+        {
+            try
+            {
+                await _productoData.ActualizarStockAsync(id, cantidad);
+            }
+            catch (Exception)
+            {
+
                 throw;
             }
         }

@@ -114,10 +114,10 @@ namespace LaboAppWebV1._0._0.Business
                     new Claim("IdLogin", usuarioLogin.IdEmpleado.ToString()),
                     new Claim("Nick", usuarioLogin.Usuario.ToString()),
                     new Claim("Id", usuarioLogin.IdEmpleado.ToString()),
-                    new Claim("grupo", _grupo),
+                    new Claim(ClaimTypes.Role, usuarioLogin.Rol),
+                    new Claim("SectorId", usuarioLogin.IdSector.ToString()),
                     new Claim("Token", _token),
                     new Claim("RefreshToken",refreshToken),
-                    new Claim("Rol", "Operador"),
                     new Claim("web", "www.LaboAppWeb.com"),
 
                 };

@@ -17,6 +17,8 @@ public partial class Empleado
 
     public int IdRol { get; set; }
 
+    public bool? Estado { get; set; }
+
     public virtual Role IdRolNavigation { get; set; } = null!;
 
     public virtual Sectore IdSectorNavigation { get; set; } = null!;

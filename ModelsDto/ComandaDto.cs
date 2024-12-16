@@ -4,6 +4,6 @@
     {
         public int IdMesa { get; set; }
         public string NombreCliente { get; set; }
-        public List<PedidoDto> Pedidos { get; set; }
+        //public List<PedidoDto> Pedidos { get; set; }
     }
 }

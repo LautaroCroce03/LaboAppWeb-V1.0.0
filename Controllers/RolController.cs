@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/rol")]
+    [Route("api/v1/rol")]
     [ApiController]
     public class RolController : ControllerBase
     {

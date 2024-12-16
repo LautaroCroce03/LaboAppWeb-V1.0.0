@@ -5,30 +5,32 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/comanda")]
+    [Route("api/v1/comanda")]
     [ApiController]
     public class ComandaController : ControllerBase
     {
         private readonly ILogger<ComandaController> _logger;
         private readonly IComandaBusiness _comandaBusiness;
         private readonly IMesaBusiness _mesaBusiness;
-
-        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness)
+        private readonly IResponseApi _responseApi;
+        public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _comandaBusiness = comandaBusiness;
             _mesaBusiness = mesaBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Post([FromBody] ModelsDto.ComandaDto comanda)
         {
             try
             {
 
-                if (comanda.Pedidos.Count.Equals(0))
-                    return BadRequest("Sin pedido");
+                //if (comanda.Pedidos.Count.Equals(0))
+                //    return BadRequest("Sin pedido");
 
                 if (!await _mesaBusiness.ExisteAsync(comanda.IdMesa))
                     return BadRequest("El numero de mesa ingresado no existe");
@@ -52,6 +54,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpGet("{idComanda}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Get(Int32 idComanda)
         {
             try
@@ -82,6 +85,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpGet()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Get()
         {
             try
@@ -109,6 +113,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpDelete("{idComanda}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Delete(int idComanda)
         {
             try

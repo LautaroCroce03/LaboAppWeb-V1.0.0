@@ -17,7 +17,13 @@ public partial class Pedido
 
     public DateTime FechaCreacion { get; set; }
 
-    public DateTime FechaFinalizacion { get; set; }
+    public DateTime? FechaFinalizacion { get; set; }
+
+    public int TiempoEstimado { get; set; }
+
+    public string? Observaciones { get; set; }
+
+    public string? CodigoCliente { get; set; }
 
     public virtual Comanda IdComandaNavigation { get; set; } = null!;
 

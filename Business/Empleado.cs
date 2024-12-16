@@ -36,13 +36,13 @@ namespace LaboAppWebV1._0._0.Business
             }
         }
 
-        public async Task<List<EmpleadoListDto>> ListadoAsync()
+        public async Task<List<EmpleadoListDto>> ListadoAsync(bool estado)
         {
             try
             {
                 List<EmpleadoListDto> empleadoDtos = new List<EmpleadoListDto>();
 
-                var _list = await _empleadoData.ListadoAsync();
+                var _list = await _empleadoData.ListadoAsync(estado);
 
                 if ((_list != null) && (_list.Count > 0))
                 {
@@ -55,6 +55,7 @@ namespace LaboAppWebV1._0._0.Business
                         empleadoDto.IdSector = item.IdSector;
                         empleadoDto.Usuario  = item.Usuario;
                         empleadoDto.IdEmpleado = item.IdEmpleado;
+                        empleadoDto.Rol = item.IdRolNavigation.Descripcion;
                         empleadoDtos.Add(empleadoDto);
                     }
 
@@ -129,6 +130,8 @@ namespace LaboAppWebV1._0._0.Business
                 if (_empleadoLogin != null)
                 {
                     var _loginEmpleado = _mapper.Map<ModelsDto.EmpleadoListDto>(_empleadoLogin);
+                    _loginEmpleado.Rol = _empleadoLogin.IdRolNavigation.Descripcion;
+
                     return _loginEmpleado;
                 }
                 else 

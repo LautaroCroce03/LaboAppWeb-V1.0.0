@@ -3,5 +3,6 @@
     public class MesaListDto:MesaDto
     {
         public Int32 IdMesa { get; set; }
+        public string Codigo { get; set; }
     }
 }

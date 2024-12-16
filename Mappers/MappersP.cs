@@ -10,13 +10,13 @@ namespace LaboAppWebV1._0._0.Mappers
         {
 
 
-            //Comanda a ComandaDto
-            CreateMap<Comanda, ComandaDto>()
-                .ForMember(dest => dest.Pedidos, opt => opt.MapFrom(src => src.Pedidos));
+            ////Comanda a ComandaDto
+            //CreateMap<Comanda, ComandaDto>()
+            //    .ForMember(dest => dest.Pedidos, opt => opt.MapFrom(src => src.Pedidos));
 
-            //ComandaDto a Comanda
-            CreateMap<ComandaDto, Comanda>()
-                .ForMember(dest => dest.Pedidos, opt => opt.MapFrom(src => src.Pedidos));
+            ////ComandaDto a Comanda
+            //CreateMap<ComandaDto, Comanda>()
+            //    .ForMember(dest => dest.Pedidos, opt => opt.MapFrom(src => src.Pedidos));
 
             //Comanda a ComandaDetalleDto
             CreateMap<Comanda, ComandaDetalleDto>()

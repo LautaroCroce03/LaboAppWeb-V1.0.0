@@ -98,5 +98,54 @@ namespace LaboAppWebV1._0._0.DataAccess
                 throw new Exception("Error al eliminar el producto", ex);
             }
         }
+
+        public async Task<Int32> DisponibleAsync(Int32 idProducto)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Productos.AsNoTrackingWithIdentityResolution()
+                                .Where(s => s.IdProducto == idProducto)
+                                .Select(x => x.Stock).FirstOrDefaultAsync();
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExisteAsync");
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteProductoAsync(Int32 id)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Productos.AsNoTrackingWithIdentityResolution().AnyAsync(x=> x.IdProducto.Equals(id));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExisteAsync");
+                throw;
+            }
+        }
+
+        public async Task ActualizarStockAsync(int id, Int32 cantidad)
+        {
+            try
+            {
+                var result = await _laboAppWebV1Context.Productos.FirstOrDefaultAsync(x=> x.IdProducto.Equals(id));
+
+                if (result != null) 
+                {
+                    result.Stock = result.Stock - cantidad;
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ExisteAsync");
+                throw;
+            }
+        }
     }
 }

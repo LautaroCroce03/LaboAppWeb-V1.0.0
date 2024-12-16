@@ -22,9 +22,15 @@ namespace LaboAppWebV1._0._0.Helpers
             //Automapper context Items
             CreateMap<ModelsDto.PedidoDto, Models.Pedido>()
                     .ForMember(dest => dest.FechaCreacion, opt => opt.MapFrom((src, dest, destMember, context) => (DateTime)context.Items["fechaActual"]))
-                    .ForMember(dest => dest.FechaFinalizacion, opt => opt.MapFrom((src, dest, destMember, context) => (DateTime)context.Items["fechaActual"]))
+                    //.ForMember(dest => dest.FechaFinalizacion, opt => opt.MapFrom((src, dest, destMember, context) => (DateTime)context.Items["fechaActual"]))
                     .ForMember(dest => dest.IdComanda, opt => opt.MapFrom((src, dest, destMember, context) => (int)context.Items["idComanda"]))
                     .ReverseMap();
+
+            CreateMap<Models.EstadoPedido, ModelsDto.EstadoPedidoDto>();
+
+            CreateMap<Models.Pedido, ClienteResponseDto>()
+                           .ForMember(dest => dest.TiempoEstimado, opt => opt.MapFrom(src => src.TiempoEstimado))
+                           .ForMember(dest => dest.TiempoDemorado, opt => opt.MapFrom(src => (int)Math.Round((DateTime.Now - src.FechaCreacion).TotalMinutes - src.TiempoEstimado, 0)));
 
             //CreateMap<Models.EstadoMesa, ModelsDto.EstadoMesaList>()
             //    .ForMember(dest => dest.IdEstado, opt => opt.MapFrom(src => src.IdEstado)) 

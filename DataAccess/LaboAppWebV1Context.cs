@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LaboAppWebV1._0._0.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
@@ -59,6 +60,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.ToTable("empleados");
 
                 entity.Property(e => e.IdEmpleado).HasColumnName("id_empleado");
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("estado");
                 entity.Property(e => e.IdRol).HasColumnName("id_rol");
                 entity.Property(e => e.IdSector).HasColumnName("id_sector");
                 entity.Property(e => e.Nombre)
@@ -118,6 +123,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.ToTable("mesas");
 
                 entity.Property(e => e.IdMesa).HasColumnName("id_mesa");
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("codigo");
                 entity.Property(e => e.IdEstado).HasColumnName("id_estado");
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)
@@ -138,6 +147,10 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 entity.Property(e => e.IdPedido).HasColumnName("id_pedido");
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+                entity.Property(e => e.CodigoCliente)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("codigo_cliente");
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasColumnName("fecha_creacion");
@@ -147,6 +160,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.Property(e => e.IdComanda).HasColumnName("id_comanda");
                 entity.Property(e => e.IdEstado).HasColumnName("id_estado");
                 entity.Property(e => e.IdProducto).HasColumnName("id_producto");
+                entity.Property(e => e.Observaciones)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+                entity.Property(e => e.TiempoEstimado).HasColumnName("tiempo_estimado");
 
                 entity.HasOne(d => d.IdComandaNavigation).WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.IdComanda)
@@ -218,4 +235,5 @@ namespace LaboAppWebV1._0._0.DataAccess
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
+
 }

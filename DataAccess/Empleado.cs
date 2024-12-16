@@ -1,4 +1,5 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
@@ -30,11 +31,11 @@ namespace LaboAppWebV1._0._0.DataAccess
             }
         }
 
-        public async Task<List<Models.Empleado>> ListadoAsync()
+        public async Task<List<Models.Empleado>> ListadoAsync(bool estado)
         {
             try
             {
-                var result = await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
+                var result = await _laboAppWebV1Context.Empleados.Include(e => e.IdRolNavigation).AsNoTrackingWithIdentityResolution().Where(x=> x.Estado.Value.Equals(estado))
                                 .ToListAsync();
 
                 if ((result != null) && (result.Count > 0))
@@ -104,9 +105,10 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             try
             {
-                return await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution()
-                                    .FirstOrDefaultAsync(l => l.Password.Equals(empleado.Password) &&
-                                    l.Usuario.Equals(empleado.Usuario));
+                return await _laboAppWebV1Context.Empleados
+                                    .Include(e => e.IdRolNavigation) 
+                                    .FirstOrDefaultAsync(e => e.Password == empleado.Password &&
+                                                              e.Usuario == empleado.Usuario);
             }
             catch (Exception ex)
             {
@@ -136,7 +138,8 @@ namespace LaboAppWebV1._0._0.DataAccess
                 var empleado = await _laboAppWebV1Context.Empleados.FindAsync(codEmpleado);
                 if (empleado != null)
                 {
-                    _laboAppWebV1Context.Empleados.Remove(empleado);
+                    empleado.Estado = false;
+                    //_laboAppWebV1Context.Empleados.Remove(empleado);
                     await _laboAppWebV1Context.SaveChangesAsync();
 
                     return true;

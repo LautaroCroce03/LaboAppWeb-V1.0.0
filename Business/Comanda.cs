@@ -31,30 +31,30 @@ namespace LaboAppWebV1._0._0.Business
 
                 if (codComanda > 0)
                 {
-                    List<ModelsDto.PedidoDto> _pedidos = new List<ModelsDto.PedidoDto>();
-                    ModelsDto.PedidoDto pedido = new ModelsDto.PedidoDto();
-                    
+                    //List<ModelsDto.PedidoDto> _pedidos = new List<ModelsDto.PedidoDto>();
+                    //ModelsDto.PedidoDto pedido = new ModelsDto.PedidoDto();
 
-                    foreach (var _pedido in comanda.Pedidos)
-                    {
-                        pedido.Cantidad = _pedido.Cantidad;
-                        pedido.IdProducto = _pedido.IdProducto;
-                        pedido.IdEstado = _pedido.IdEstado;
+                    return codComanda;
+                    //foreach (var _pedido in comanda.Pedidos)
+                    //{
+                    //    pedido.Cantidad = _pedido.Cantidad;
+                    //    pedido.IdProducto = _pedido.IdProducto;
+                    //    pedido.IdEstado = _pedido.IdEstado;
 
-                        _pedidos.Add(pedido);
-                    }
+                    //    _pedidos.Add(pedido);
+                    //}
 
                     //Guardamos el pedido
-                    var _result = await _pedidoBusiness.AgregarAsync(_pedidos, codComanda);
+                    //var _result = await _pedidoBusiness.AgregarAsync(_pedidos, codComanda);
 
-                    if (_result)
-                    {
-                        return codComanda;
-                    }
-                    else 
-                    {
-                        return 0;
-                    }
+                    //if (_result)
+                    //{
+                    //    return codComanda;
+                    //}
+                    //else 
+                    //{
+                    //    return 0;
+                    //}
                 }
                 else 
                 {
