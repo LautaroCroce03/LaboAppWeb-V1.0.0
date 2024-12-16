@@ -16,6 +16,7 @@ namespace LaboAppWebV1._0._0.IServices
         Task DeleteAsync(int id);
         Task<IEnumerable<ModelsDto.EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector();
         Task<IEnumerable<ModelsDto.OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin);
+        Task<IEnumerable<ModelsDto.OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin);
     }
     public interface IEmpleadoBusiness
     {
@@ -30,5 +31,6 @@ namespace LaboAppWebV1._0._0.IServices
         Task DeleteAsync(int id);
         Task<IEnumerable<ModelsDto.EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector();
         Task<IEnumerable<ModelsDto.OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin);
+        Task<IEnumerable<ModelsDto.OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin);
     }
 }

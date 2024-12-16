@@ -260,5 +260,39 @@ namespace LaboAppWebV1._0._0.DataAccess
             return operaciones;
         }
 
+        public async Task<IEnumerable<ModelsDto.OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            var query = from emp in _laboAppWebV1Context.Empleados
+                        join sec in _laboAppWebV1Context.Sectores on emp.IdSector equals sec.IdSector
+                        join prod in _laboAppWebV1Context.Productos on sec.IdSector equals prod.IdSector
+                        join ped in _laboAppWebV1Context.Pedidos on prod.IdProducto equals ped.IdProducto
+                        where (!fechaInicio.HasValue || ped.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtro por fecha de inicio sin hora
+                              && (!fechaFin.HasValue || ped.FechaCreacion.Date <= fechaFin.Value.Date)  // Filtro por fecha de fin sin hora
+                        group new { emp, sec } by new
+                        {
+                            emp.IdEmpleado,
+                            emp.Nombre,
+                            sec.Descripcion //  descripción del sector
+                        } into empGroup
+                        select new ModelsDto.OperacionesEmpleadoDto
+                        {
+                            Id = empGroup.Key.IdEmpleado,
+                            Nombre = empGroup.Key.Nombre,
+                            Descripcion = empGroup.Key.Descripcion, // Asigna descripción del sector
+                            CantidadOperaciones = empGroup.Count() // Contamos el número de pedidos
+                        };
+
+            var resultado = await query.OrderByDescending(e => e.CantidadOperaciones).ToListAsync();
+
+            // Si no se encuentra devuelve un mensaje de error
+            if (resultado == null || !resultado.Any())
+            {
+                _logger.LogWarning("No se encontró ninguna operación.");
+                return null;
+            }
+
+            _logger.LogInformation("Busqueda finalizada con exito.");
+            return resultado;
+        }
     }
 }

@@ -217,9 +217,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         }
 
-
-        
-        [HttpGet("CantidadOperacionesPorSector/{idSector}")]
+        [HttpGet("cantidadOperacionesPorSector/{idSector}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "RequireSocioRole")]
         public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(
@@ -266,6 +264,41 @@ namespace LaboAppWebV1._0._0.Controllers
                 return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener la cantidad de operaciones por sector: {ex.Message}", HttpContext, null));
 
             }
+        }
+
+        [HttpGet("operacionesDeTodosLosEmpleados")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
+        public async Task<ActionResult<IEnumerable<OperacionesEmpleadoDto>>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            // Validación de parámetros
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio > fechaFin)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", "La fecha de inicio no puede ser posterior a la fecha de fin.", HttpContext, null));
+            }
+
+            try
+            {
+                // Llama al servicio pasándole las fechas de filtro
+                var operaciones = await _empleadoBusiness.ObtenerTodasLasOperacionesEmpleados(fechaInicio, fechaFin);
+
+                // Si no se encontraron operaciones
+                if (operaciones == null || !operaciones.Any())
+                {
+                    
+                    return NotFound(_responseApi.Msj(404, "Error", "No se encontraron operaciones para los filtros proporcionados.", HttpContext, null));
+                }
+
+                
+                return Ok(_responseApi.Msj(404, "Correcto", "Operaciones de empleados obtenidas exitosamente.", HttpContext, operaciones));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener las operaciones de empleados: {ex.Message}", HttpContext, null));
+            }
+
         }
 
     }
