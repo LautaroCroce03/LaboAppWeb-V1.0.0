@@ -11,11 +11,13 @@ namespace LaboAppWebV1._0._0.Controllers
     {
         private ILogger<PedidoController> _logger;
         private readonly IPedidoBusiness _pedidoBusiness;
+        private readonly IResponseApi _responseApi;
 
-        public PedidoController(ILogger<PedidoController> logger, IPedidoBusiness pedidoBusiness)
+        public PedidoController(ILogger<PedidoController> logger, IPedidoBusiness pedidoBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _pedidoBusiness = pedidoBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
@@ -29,11 +31,11 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (_result != null)
                 {
-                    return Ok(_result);
+                    return Ok(_responseApi.Msj(200, "OK", "Pedido agregado correctamente", HttpContext, _result));
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al realizar el alta", HttpContext, null));
                 }
             }
             catch (System.Exception ex)
@@ -54,19 +56,20 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (!_result)
                 {
-                    return BadRequest("No existe el pedido");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el pedido", HttpContext, null));
                 }
 
                 await _pedidoBusiness.CambioEstadoAsync(idPedido, idEstadoNuevo);
 
-                return Ok("Se cambio correctamente el estado");
+                return Ok(_responseApi.Msj(200, "OK", "Se cambio correctamente el estado", HttpContext, null));
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "Post");
+                _logger.LogError(ex, "Put");
                 throw;
             }
         }
+
         [HttpPut("codigoCliente/{codCliente}/{idEstadoNuevo}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
@@ -78,16 +81,16 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (!_result)
                 {
-                    return BadRequest("No existe el pedido");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el pedido", HttpContext, null));
                 }
 
                 await _pedidoBusiness.CambioEstadoidClienteAsync(codCliente, idEstadoNuevo);
 
-                return Ok("Se cambio correctamente el estado");
+                return Ok(_responseApi.Msj(200, "OK", "Se cambio correctamente el estado", HttpContext, null));
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "Post");
+                _logger.LogError(ex, "Put");
                 throw;
             }
         }

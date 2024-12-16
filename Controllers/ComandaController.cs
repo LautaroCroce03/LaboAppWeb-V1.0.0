@@ -13,6 +13,7 @@ namespace LaboAppWebV1._0._0.Controllers
         private readonly IComandaBusiness _comandaBusiness;
         private readonly IMesaBusiness _mesaBusiness;
         private readonly IResponseApi _responseApi;
+
         public ComandaController(ILogger<ComandaController> logger, IComandaBusiness comandaBusiness, IMesaBusiness mesaBusiness, IResponseApi responseApi)
         {
             _logger = logger;
@@ -28,27 +29,26 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-
                 //if (comanda.Pedidos.Count.Equals(0))
                 //    return BadRequest("Sin pedido");
 
                 if (!await _mesaBusiness.ExisteAsync(comanda.IdMesa))
-                    return BadRequest("El numero de mesa ingresado no existe");
+                    return BadRequest(_responseApi.Msj(400, "Error", "El número de mesa ingresado no existe", this.HttpContext, ""));
 
                 var idComanda = await _comandaBusiness.AgregarAsync(comanda);
                 if (idComanda > 0)
                 {
-                    return Ok($"Nro de pedido {idComanda}");
+                    return Ok(_responseApi.Msj(200, "Correcto", $"Nro de pedido {idComanda}", this.HttpContext, ""));
                 }
                 else
                 {
-                    return BadRequest("Por favor completar los campos");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Por favor completar los campos", this.HttpContext, ""));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al procesar la comanda.");
-                return BadRequest("Error al procesar la comanda.");
+                return BadRequest(_responseApi.Msj(400, "Error", "Error al procesar la comanda", this.HttpContext, ""));
             }
         }
 
@@ -59,27 +59,26 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-                if (idComanda <= 0) 
+                if (idComanda <= 0)
                 {
-                    return BadRequest();
-                }       
+                    return BadRequest(_responseApi.Msj(400, "Error", "ID de comanda inválido", this.HttpContext, ""));
+                }
+
                 var _comanda = await _comandaBusiness.ListadoAsync(idComanda);
 
                 if (_comanda != null)
                 {
-                    return Ok(_comanda);
+                    return Ok(_responseApi.Msj(200, "Correcto", "Comanda encontrada", this.HttpContext, _comanda));
                 }
-                else 
+                else
                 {
-                    return BadRequest("Sin registros");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Sin registros", this.HttpContext, ""));
                 }
-
-
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Error al procesar la comanda.");
-                return BadRequest("Error al procesar la comanda.");
+                return BadRequest(_responseApi.Msj(400, "Error", "Error al procesar la comanda", this.HttpContext, ""));
             }
         }
 
@@ -90,24 +89,21 @@ namespace LaboAppWebV1._0._0.Controllers
         {
             try
             {
-
                 var _comanda = await _comandaBusiness.ListadoAsync();
 
                 if (_comanda != null)
                 {
-                    return Ok(_comanda);
+                    return Ok(_responseApi.Msj(200, "Correcto", "Listado de comandas obtenido", this.HttpContext, _comanda));
                 }
                 else
                 {
-                    return BadRequest("Sin registros");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Sin registros", this.HttpContext, ""));
                 }
-
-
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Get");
-                throw;
+                return BadRequest(_responseApi.Msj(400, "Error", "Error al obtener el listado de comandas", this.HttpContext, ""));
             }
         }
 
@@ -121,17 +117,17 @@ namespace LaboAppWebV1._0._0.Controllers
                 var result = await _comandaBusiness.EliminarAsync(idComanda);
                 if (result)
                 {
-                    return Ok($"Comanda con ID {idComanda} eliminada correctamente.");
+                    return Ok(_responseApi.Msj(200, "Correcto", $"Comanda con ID {idComanda} eliminada correctamente", this.HttpContext, ""));
                 }
                 else
                 {
-                    return NotFound($"Comanda con ID {idComanda} no encontrada.");
+                    return NotFound(_responseApi.Msj(404, "Error", $"Comanda con ID {idComanda} no encontrada", this.HttpContext, ""));
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Delete");
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                return StatusCode(500, _responseApi.Msj(500, "Error", $"Error interno del servidor: {ex.Message}", this.HttpContext, ""));
             }
         }
     }
