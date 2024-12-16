@@ -102,13 +102,13 @@ VALUES
     ('Tomás Herrera', 'socio3', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 0),
 	('Benito Paco', 'benito', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 6, 1);		
 	
-INSERT INTO mesas (id_estado, nombre)
+INSERT INTO mesas (id_estado, nombre, codigo)
 VALUES
-(1, 'Mesa Principal'),
-(1, 'Mesa Ventana'),
-(1, 'Mesa Terraza'),
-(1, 'Mesa Privada'),
-(1, 'Mesa Familiar');
+(1, 'Mesa Principal', 'HOIPS'),
+(1, 'Mesa Ventana', 'FL1BN'),
+(1, 'Mesa Terraza', 'A8RMO'),
+(1, 'Mesa Privada', '1OZNI'),
+(1, 'Mesa Familiar', 'YOXNX');
 
 INSERT INTO comandas (id_mesa, nombre_cliente)
 VALUES

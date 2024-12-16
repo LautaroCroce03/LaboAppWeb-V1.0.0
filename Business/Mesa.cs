@@ -9,12 +9,13 @@ namespace LaboAppWebV1._0._0.Business
         private ILogger<Mesa> _logger;
         private readonly IMesaDataAccess _mesaData;
         private readonly IMapper _mapper;
-
-        public Mesa(ILogger<Mesa> logger, IMesaDataAccess mesaData, IMapper mapper)
+        private readonly IGenerar _generar;
+        public Mesa(ILogger<Mesa> logger, IMesaDataAccess mesaData, IMapper mapper, IGenerar generar)
         {
             _logger = logger;
             _mesaData = mesaData;
             _mapper = mapper;
+            _generar = generar;
         }
 
         public async Task<Int32> AgregarAsync(ModelsDto.MesaDto estadoMesa)
@@ -23,7 +24,7 @@ namespace LaboAppWebV1._0._0.Business
             try
             {
                 var _mesa = _mapper.Map<Models.Mesa>(estadoMesa);
-
+                _mesa.Codigo = _generar.Codigo();
                 return await _mesaData.AgregarAsync(_mesa);
             }
             catch (Exception ex)

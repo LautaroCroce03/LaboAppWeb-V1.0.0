@@ -10,14 +10,15 @@ namespace LaboAppWebV1._0._0.Business
         private readonly IPedidoDataAccess _pedidoDataAccess;
         private readonly IMapper _mapper;
         private readonly IProductoBusiness _productoBusiness;
+        private readonly IGenerar _generar;
 
-
-        public Pedido(ILogger<Pedido> logger, IPedidoDataAccess pedidoDataAccess, IMapper mapper, IProductoBusiness productoBusiness)
+        public Pedido(ILogger<Pedido> logger, IPedidoDataAccess pedidoDataAccess, IMapper mapper, IProductoBusiness productoBusiness, IGenerar generar)
         {
             _logger = logger;
             _pedidoDataAccess = pedidoDataAccess;
             _mapper = mapper;
             _productoBusiness = productoBusiness;
+            _generar = generar;
         }
 
         public async Task<PedidoRespuestaDto> AgregarAsync(PedidoDto pedido)
@@ -43,7 +44,7 @@ namespace LaboAppWebV1._0._0.Business
                     opt.Items["idComanda"] = pedido.IdComanda;
                 });
                 _pedido.IdEstado = 1;
-                _pedido.CodigoCliente = GenerarCodigo();
+                _pedido.CodigoCliente = _generar.Codigo();
                 Int32 idPedido = await _pedidoDataAccess.AgregarAsync(_pedido);
                 if (idPedido > 0)
                 {
@@ -125,14 +126,7 @@ namespace LaboAppWebV1._0._0.Business
             }
         }
 
-        private string GenerarCodigo()
-        {
-            const string caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-            var random = new Random();
-            return new string(Enumerable.Repeat(caracteres, 5)
-                                        .Select(s => s[random.Next(s.Length)])
-                                        .ToArray());
-        }
+
 
         public async Task<bool> ExisteIdClienteAsync(string idCliente)
         {
