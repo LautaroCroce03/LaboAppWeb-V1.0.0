@@ -1,4 +1,5 @@
 ﻿using LaboAppWebV1._0._0.IServices;
+using LaboAppWebV1._0._0.ModelsDto;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -183,5 +184,89 @@ namespace LaboAppWebV1._0._0.Controllers
                 return BadRequest(response);
             }
         }
+
+        
+        [HttpGet("cantidadEmpleadosPorSector")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
+        public async Task<ActionResult<IEnumerable<EmpleadosPorSectorResponseDto>>> CantidadEmpleadosPorSector()
+        {
+
+            try
+            {
+                // Llama al servicio para obtener la cantidad de empleados
+                var resultado = await _empleadoBusiness.CantidadEmpleadosPorSector();
+
+                // Si no hay empleados
+                if (resultado == null)
+                {
+                    
+                    return NotFound(_responseApi.Msj(404, "Error", "No hay empleados para mostrar...", HttpContext, null));
+                }
+
+                // Devuelve el el resultado con un código de estado 200 OK
+
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Cantidad de empleados por sector obtenida exitosamente.", HttpContext, resultado));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener la cantidad de empleados por sector: {ex.Message}", HttpContext, null));
+            }
+
+
+        }
+
+
+        
+        [HttpGet("CantidadOperacionesPorSector/{idSector}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
+        public async Task<ActionResult<IEnumerable<OperacionesPorSectorDto>>> CantidadOperacionesPorSector(
+             int idSector,
+             [FromQuery] DateTime? fechaInicio,
+             [FromQuery] DateTime? fechaFin)
+        {
+            // Verifica que el ID sea válido
+            if (idSector <= 0)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", "El ID del sector debe ser mayor que 0.", HttpContext, null));
+            }
+
+            // Validar que fechaInicio no sea mayor que fechaFin
+            if (fechaInicio.HasValue && fechaFin.HasValue && fechaInicio.Value > fechaFin.Value)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", "La fecha de inicio no puede ser mayor que la fecha de fin.", HttpContext, null));
+            }
+
+            try
+            {
+                // Llama al servicio con los parámetros de fechas
+                var resultado = await _empleadoBusiness.CantidadOperacionesPorSector(idSector, fechaInicio, fechaFin);
+
+
+
+                // Si no se encuentran operaciones
+                if (resultado == null || !resultado.Any())
+                {
+                    string mensaje = fechaInicio.HasValue || fechaFin.HasValue
+                        ? $"No se encontraron operaciones para el sector con ID: {idSector} dentro del rango de fechas especificado."
+                        : $"No se encontraron operaciones para el sector con ID: {idSector}.";
+
+                    return NotFound(_responseApi.Msj(404, "Error", mensaje, HttpContext, null));
+                }
+
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Operaciones obtenidas exitosamente por sector.", HttpContext, resultado));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener la cantidad de operaciones por sector: {ex.Message}", HttpContext, null));
+
+            }
+        }
+
     }
 }

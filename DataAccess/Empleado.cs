@@ -187,5 +187,78 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             }
         }
+
+        public async Task<IEnumerable<ModelsDto.EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector()
+        {
+            _logger.LogInformation("Iniciando la búsqueda del empleados por sector.");
+
+            // Agrupa los empleados por el sectorID y calcula la cantidad total por sector
+            var listado = await _laboAppWebV1Context.Empleados
+                .GroupBy(e => e.IdSector)
+                .Select(g => new ModelsDto.EmpleadosPorSectorResponseDto // creamos un nuevo objeto anónimo con dos propiedades elsector y la cantidad 
+                {
+                    Sector = g.FirstOrDefault().IdSectorNavigation.Descripcion,
+                    CantidadEmpleados = g.Count()
+                })
+                .ToListAsync();
+
+            // Si no se encuentra devuelve un mensaje de error
+            if (listado == null)
+            {
+                _logger.LogWarning("No se encontró ningún empleado.");
+                return null;
+            }
+
+            _logger.LogInformation("Busqueda finalizada con exito.");
+            return listado;
+
+        }
+
+        public async Task<IEnumerable<ModelsDto.OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            _logger.LogInformation("Iniciando la búsqueda de la cantidad de operaciones por sector.");
+
+            // Consulta inicial
+            var query = _laboAppWebV1Context.Pedidos
+                .Join(
+                    _laboAppWebV1Context.Productos,
+                    pedido => pedido.IdProducto,
+                    producto => producto.IdProducto,
+                    (pedido, producto) => new { pedido, producto })
+                .Where(pp => pp.producto.IdSector == idSector)
+                .AsQueryable();
+
+            // Aplicamos filtro por fechas
+            if (fechaInicio.HasValue)
+            {
+                query = query.Where(pp => pp.pedido.FechaCreacion.Date >= fechaInicio.Value.Date);
+            }
+
+            if (fechaFin.HasValue)
+            {
+                query = query.Where(pp => pp.pedido.FechaCreacion.Date <= fechaFin.Value.Date);
+            }
+
+            // Agrupación 
+            var operaciones = await query
+                .GroupBy(pp => pp.producto.IdSectorNavigation.Descripcion)
+                .Select(g => new ModelsDto.OperacionesPorSectorDto
+                {
+                    Descripcion = g.Key,
+                    CantidadOperaciones = g.Count()
+                })
+                .ToListAsync();
+
+            // resultado
+            if (operaciones == null || !operaciones.Any())
+            {
+                _logger.LogWarning("No se encontró ninguna operación.");
+                return Enumerable.Empty<ModelsDto.OperacionesPorSectorDto>();
+            }
+
+            _logger.LogInformation("Búsqueda finalizada con éxito.");
+            return operaciones;
+        }
+
     }
 }

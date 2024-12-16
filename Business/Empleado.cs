@@ -195,6 +195,32 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<IEnumerable<EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector()
+        {
+            try
+            {
+                return await _empleadoData.CantidadEmpleadosPorSector();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _empleadoData.CantidadOperacionesPorSector(idSector, fechaInicio, fechaFin);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }
 
