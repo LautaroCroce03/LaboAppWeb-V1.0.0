@@ -214,7 +214,7 @@ namespace LaboAppWebV1._0._0.Controllers
         }
 
         [Authorize(Policy = "RequireSocioRole")]
-        [HttpGet("GetPedidoBy/{id}")]
+        [HttpGet("pedido/{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetPedidoById(int id)
         {
