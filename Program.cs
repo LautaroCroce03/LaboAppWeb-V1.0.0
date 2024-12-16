@@ -129,6 +129,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IResponseApi, LaboAppWebV1._0._0.Business.ResponseApi>();
     services.AddScoped<IEstadoPedidoBusiness, LaboAppWebV1._0._0.Business.EstadoPedido>();
     services.AddScoped<IGenerar, LaboAppWebV1._0._0.Business.Generar>();
+    services.AddScoped<IClienteBusiness, LaboAppWebV1._0._0.Business.Cliente>();
 
     services.AddScoped<IRolDataAccess, LaboAppWebV1._0._0.DataAccess.Rol>();
     services.AddScoped<ISectorDataAccess, LaboAppWebV1._0._0.DataAccess.Sector>();
@@ -139,6 +140,7 @@ void ConfigureServices(IServiceCollection services, ConfigurationManager configu
     services.AddScoped<IComandaDataAccess, LaboAppWebV1._0._0.DataAccess.Comanda>();
     services.AddScoped<IProductoDataAccess, LaboAppWebV1._0._0.DataAccess.Producto>();
     services.AddScoped<IEstadoPedidoDataAccess, LaboAppWebV1._0._0.DataAccess.EstadoPedido>();
+    services.AddScoped<ICliente, LaboAppWebV1._0._0.DataAccess.Cliente>();
 
     services.AddScoped<IEncriptar, LaboAppWebV1._0._0.Business.Encriptar>();
     services.AddScoped<ITokenJWT, LaboAppWebV1._0._0.Business.TokenJWT>();
