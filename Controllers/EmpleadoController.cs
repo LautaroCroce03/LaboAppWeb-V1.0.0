@@ -22,8 +22,10 @@ namespace LaboAppWebV1._0._0.Controllers
             _sectorBusiness = sectorBusiness;
         }
 
+        
         [HttpPost()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
         public async Task<IActionResult> Post([FromBody] ModelsDto.EmpleadoDto empleadoDto)
         {
             try
@@ -59,11 +61,13 @@ namespace LaboAppWebV1._0._0.Controllers
         }
         [HttpGet()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
         public async Task<IActionResult> Get()
         {
             try
             {
-                var _result = await _empleadoBusiness.ListadoAsync();
+                //Activos
+                var _result = await _empleadoBusiness.ListadoAsync(true);
 
                 if (_result.Count > 0)
                 {
@@ -80,9 +84,34 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
+        [HttpGet("inActivo")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
+        public async Task<IActionResult> GetInActivo()
+        {
+            try
+            {
+                //Activos
+                var _result = await _empleadoBusiness.ListadoAsync(false);
 
+                if (_result.Count > 0)
+                {
+                    return Ok(_result);
+                }
+                else
+                {
+                    return BadRequest("Error al realizar el alta");
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Get");
+                throw;
+            }
+        }
         [HttpPut("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
         public async Task<IActionResult> Post(int id, [FromBody] ModelsDto.EmpleadoDto empleadoDto)
         {
             try
@@ -115,6 +144,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpDelete("{id}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
         public async Task<IActionResult> Delete(int id)
         {
             try
@@ -144,6 +174,7 @@ namespace LaboAppWebV1._0._0.Controllers
         }
         [HttpPut()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireAdministradorRole")]
         public async Task<IActionResult> Update(int id)
         {
             try

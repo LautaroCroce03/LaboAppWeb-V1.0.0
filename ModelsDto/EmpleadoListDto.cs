@@ -3,5 +3,6 @@
     public class EmpleadoListDto : EmpleadoDto
     {
         public int IdEmpleado { get; set; }
+        public string Rol { get; set; }
     }
 }

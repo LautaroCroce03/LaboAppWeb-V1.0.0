@@ -2,6 +2,8 @@
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
+
+
     public partial class LaboAppWebV1Context : DbContext
     {
         public LaboAppWebV1Context()
@@ -59,6 +61,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.ToTable("empleados");
 
                 entity.Property(e => e.IdEmpleado).HasColumnName("id_empleado");
+                entity.Property(e => e.Estado)
+                    .IsRequired()
+                    .HasDefaultValueSql("((1))")
+                    .HasColumnName("estado");
                 entity.Property(e => e.IdRol).HasColumnName("id_rol");
                 entity.Property(e => e.IdSector).HasColumnName("id_sector");
                 entity.Property(e => e.Nombre)
@@ -218,4 +224,5 @@ namespace LaboAppWebV1._0._0.DataAccess
 
         partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
     }
+
 }

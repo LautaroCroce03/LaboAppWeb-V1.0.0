@@ -10,6 +10,9 @@ delete from productos
 delete from sectores
 
 
+--ALTER
+ALTER TABLE Empleados 
+ADD estado BIT NOT NULL default 1;
 
 --reiniciamos las claves
 DBCC CHECKIDENT('estado_mesas' , RESEED, 0)
@@ -47,12 +50,12 @@ VALUES
     ('Finalizado');	
 
 INSERT INTO roles(descripcion) 
-VALUES('Administrador'),
-		('Bartender'),
+VALUES	('Bartender'),
 		('Cervecero'),
 		('Cocinero'),
 		('Mozo'),
-		('Socio');
+		('Socio'),
+		('Administrador');
 
 INSERT INTO Sectores (Descripcion)
 VALUES
@@ -74,3 +77,16 @@ VALUES
     (3, 'Empanadas de Pollo', 150, 1500.00),
     (4, 'Postre Tiramisú', 40, 5000.00),
     (4, 'Café', 400, 2500.00);	
+	
+
+	INSERT INTO Empleados (Nombre, Usuario, Password, id_sector, id_rol, estado)
+VALUES
+    ('Lucas González', 'bartender1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, 1, 1),
+    ('Sofía Martínez', 'cervecero1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 2, 2, 1),
+    ('Matías Romero', 'cocinero1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 3, 3, 1),
+    ('Camila Torres', 'mozo1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 4, 4, 1),
+    ('Ignacio Fernández', 'socio1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 1),
+    ('Valentina López', 'bartender2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, 1, 0),
+    ('Joaquín Díaz', 'socio2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 1),
+    ('Emilia Sánchez', 'cocinero2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 3, 3, 1),
+    ('Tomás Herrera', 'socio3', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 0);	
