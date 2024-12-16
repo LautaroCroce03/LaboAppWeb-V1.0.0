@@ -205,5 +205,18 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _pedidoDataAccess.GetProductoMasVendido(fechaInicio, fechaFin);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -274,5 +274,53 @@ namespace LaboAppWebV1._0._0.DataAccess
 
             return productoMenosVendidoDto;
         }
+
+        public async Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            _logger.LogInformation("Iniciando la búsqueda del producto más vendido.");
+
+            // Agrupamos los pedidos por el ID del producto y calculamos la cantidad total vendida por producto
+            var productoMasVendido = await _laboAppWebV1Context.Pedidos
+                .Where(p =>
+                    (!fechaInicio.HasValue || p.FechaCreacion.Date >= fechaInicio.Value.Date)  // Filtramos por fecha de inicio sin hora
+                    && (!fechaFin.HasValue || p.FechaCreacion.Date <= fechaFin.Value.Date) // Filtramos por fecha de fin sin hora
+                )
+                .GroupBy(p => p.IdProducto)
+                .Select(g => new  // Creamos un nuevo objeto con el ID del producto y la cantidad vendida
+                {
+                    ProductoId = g.Key,
+                    CantidadVendida = g.Sum(p => p.Cantidad) // Sumamos la cantidad de cada detalle de pedido
+                })
+                .OrderByDescending(g => g.CantidadVendida) // Ordenamos de forma descendente por la cantidad vendida
+                .FirstOrDefaultAsync(); // Obtenemos el producto más vendido o null si no hay datos
+
+            // Si no se encuentra ningún producto vendido, devuelve un mensaje de error
+            if (productoMasVendido == null)
+            {
+                _logger.LogWarning("No se encontró ningún producto vendido.");
+                return null; // Si no se encuentra un producto más vendido, retorna null
+            }
+
+            // Busca el producto en la BBDD utilizando el ID obtenido
+            var producto = await _laboAppWebV1Context.Productos.FindAsync(productoMasVendido.ProductoId);
+
+            if (producto == null)
+            {
+                _logger.LogWarning("El producto no existe en la BBDD");
+                return null; // Si el producto no existe, retorna null
+            }
+
+            _logger.LogInformation($"Producto más vendido encontrado: ID {productoMasVendido.ProductoId} - Cantidad Vendida {productoMasVendido.CantidadVendida}");
+
+            // Mapear Producto a ProductoVendidoDto para devolverlo al controller
+            var productoMasVendidoDto = _mapper.Map<ProductoVendidoDto>(producto);
+
+            // Añadir manualmente la cantidad vendida ya que no está en la entidad producto
+            productoMasVendidoDto.CantidadVendida = productoMasVendido.CantidadVendida;
+
+            return productoMasVendidoDto;
+        }
+
+
     }
 }
