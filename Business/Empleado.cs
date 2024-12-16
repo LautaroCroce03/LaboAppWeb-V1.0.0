@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using LaboAppWebV1._0._0.DataAccess;
 using LaboAppWebV1._0._0.IServices;
 using LaboAppWebV1._0._0.ModelsDto;
 
@@ -188,6 +189,45 @@ namespace LaboAppWebV1._0._0.Business
             try
             {
                 await _empleadoData.DeleteAsync(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<EmpleadosPorSectorResponseDto>> CantidadEmpleadosPorSector()
+        {
+            try
+            {
+                return await _empleadoData.CantidadEmpleadosPorSector();
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OperacionesPorSectorDto>> CantidadOperacionesPorSector(int idSector, DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _empleadoData.CantidadOperacionesPorSector(idSector, fechaInicio, fechaFin);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<OperacionesEmpleadoDto>> ObtenerTodasLasOperacionesEmpleados(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _empleadoData.ObtenerTodasLasOperacionesEmpleados(fechaInicio, fechaFin);
             }
             catch (Exception)
             {

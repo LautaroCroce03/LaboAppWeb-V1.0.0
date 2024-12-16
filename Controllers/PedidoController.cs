@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
@@ -11,11 +12,13 @@ namespace LaboAppWebV1._0._0.Controllers
     {
         private ILogger<PedidoController> _logger;
         private readonly IPedidoBusiness _pedidoBusiness;
+        private readonly IResponseApi _responseApi;
 
-        public PedidoController(ILogger<PedidoController> logger, IPedidoBusiness pedidoBusiness)
+        public PedidoController(ILogger<PedidoController> logger, IPedidoBusiness pedidoBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _pedidoBusiness = pedidoBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpPost()]
@@ -29,11 +32,11 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (_result != null)
                 {
-                    return Ok(_result);
+                    return Ok(_responseApi.Msj(200, "OK", "Pedido agregado correctamente", HttpContext, _result));
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    return BadRequest(_responseApi.Msj(400, "Error", "Error al realizar el alta", HttpContext, null));
                 }
             }
             catch (System.Exception ex)
@@ -54,19 +57,20 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (!_result)
                 {
-                    return BadRequest("No existe el pedido");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el pedido", HttpContext, null));
                 }
 
                 await _pedidoBusiness.CambioEstadoAsync(idPedido, idEstadoNuevo);
 
-                return Ok("Se cambio correctamente el estado");
+                return Ok(_responseApi.Msj(200, "OK", "Se cambio correctamente el estado", HttpContext, null));
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "Post");
+                _logger.LogError(ex, "Put");
                 throw;
             }
         }
+
         [HttpPut("codigoCliente/{codCliente}/{idEstadoNuevo}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
@@ -78,18 +82,166 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (!_result)
                 {
-                    return BadRequest("No existe el pedido");
+                    return BadRequest(_responseApi.Msj(400, "Error", "No existe el pedido", HttpContext, null));
                 }
 
                 await _pedidoBusiness.CambioEstadoidClienteAsync(codCliente, idEstadoNuevo);
 
-                return Ok("Se cambio correctamente el estado");
+                return Ok(_responseApi.Msj(200, "OK", "Se cambio correctamente el estado", HttpContext, ""));
             }
             catch (System.Exception ex)
             {
-                _logger.LogError(ex, "Post");
+                _logger.LogError(ex, "Put");
                 throw;
             }
+        }
+
+        //// INFORMES PEDIDOS A -  producto más vendido
+        
+        [HttpGet("productoMasVendido")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
+        public async Task<IActionResult> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                // Llama al servicio para obtener el producto más vendido con el filtro de fechas
+                var productoMasVendido = await _pedidoBusiness.GetProductoMasVendido(fechaInicio, fechaFin);
+
+                // Si el producto no existe en la base de datos, devuelve un mensaje de error
+                if (productoMasVendido == null)
+                {
+                    return NotFound(_responseApi.Msj(404, "Error", "No se encontró ningún producto vendido.", HttpContext, null));
+                }
+
+                // Devuelve el producto más vendido con un código de estado 200 OK
+
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Producto más vendido obtenido exitosamente..", HttpContext, productoMasVendido));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error inesperado al obtener el producto más vendido: {ex.Message}", 
+                    HttpContext, null));
+            }
+        }
+
+
+        // INFORMES PEDIDOS B -  producto menos vendido
+        
+        [HttpGet("productoMenosVendido")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
+        public async Task<IActionResult> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                // Llama al servicio para obtener el producto menos vendido, pasando las fechas como parámetros
+                var productoMenosVendido = await _pedidoBusiness.GetProductoMenosVendido(fechaInicio, fechaFin);
+
+                // Si no se encuentra ningún producto menos vendido, devuelve un mensaje de error
+                if (productoMenosVendido == null)
+                {
+                    return NotFound(_responseApi.Msj(404, "Error", "No se encontró ningún producto vendido.", HttpContext, null));
+                }
+
+                // Devuelve el producto menos vendido con un código de estado 200 OK
+                return Ok(_responseApi.Msj(200, "Correcto", "Producto menos vendido obtenido exitosamente.", HttpContext, productoMenosVendido));
+
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error inesperado al obtener el producto menos vendido: {ex.Message}",
+                    HttpContext, null));
+            }
+        }
+
+       
+        [HttpGet("productosEnEstadoPendientePorSector")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetProductosxSector(int sectorId)
+        {
+
+            // Obtenemos el rol del usuario autenticado
+            var userRole = HttpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Role)?.Value;
+            var userSectorIdClaim = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "SectorId")?.Value;
+
+            // Si el usuario no tiene el claim de sector o rol, retornamos no autorizado
+            if (string.IsNullOrEmpty(userRole) || string.IsNullOrEmpty(userSectorIdClaim))
+            {
+                
+                return Unauthorized(_responseApi.Msj(403, "Error", "No tiene permisos para realizar esta operación.", HttpContext, null));
+            }
+
+            // Convertimos el claim de sector a entero
+            if (!int.TryParse(userSectorIdClaim, out var userSectorId))
+            {
+                return Unauthorized(_responseApi.Msj(403, "Error", "No tiene permisos para realizar esta operación.", HttpContext, null));
+            }
+
+            // Verificamos permisos según el rol
+            if (userRole != "Socio" && userSectorId != sectorId)
+            {
+                return Unauthorized(_responseApi.Msj(403, "Error", "No tiene permisos para visualizar los pedidos del sector solicitado.", HttpContext, null));
+            }
+
+            // Validar que el sectorId sea mayor a 0
+            if (sectorId <= 0)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", "El ID del sector proporcionado no es válido. Debe ser un número mayor que 0.", HttpContext, null));
+            }
+
+            try
+            {
+                // Llamamos al servicio para obtener los productos por sector en estado pendiente
+                var productos = await _pedidoBusiness.GetProductosPendientesXSector(sectorId);
+
+                // Si no hay productos, retornamos un mensaje de error
+                if (productos == null || !productos.Any())
+                {
+                    
+                    return NotFound(_responseApi.Msj(404, "Error", "No se encontró ningún producto en estado pendiente para este sector.", HttpContext, null));
+                }
+
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Productos en estado pendiente encontrados exitosamente.", HttpContext, productos));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener los productos pendientes: {ex.Message}", HttpContext, null));
+            }
+        }
+
+        [Authorize(Policy = "RequireSocioRole")]
+        [HttpGet("pedido/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetPedidoById(int id)
+        {
+            // Verificar si el ID proporcionado es mayor que 0
+            if (id <= 0)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", $"El ID proporcionado no es válido. Debe ser un número mayor que 0.", HttpContext, null));
+            }
+            try
+            {
+                // Guarda el pedido en una variable que va a llamar al Servicio 
+                var pedido = await _pedidoBusiness.PedidoById(id);
+                if (pedido == null)
+                {
+                    
+                    return NotFound(_responseApi.Msj(404, "Error", $"No se encontró un pedido con el ID {id}.", HttpContext, null));
+                }
+                // Si se encuentra el pedido, devolverlo con un código de estado 200 OK
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Pedido obtenido exitosamente.", HttpContext, pedido));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error inesperado al buscar el pedido: {ex.Message}", HttpContext, null));
+            }
+
         }
     }
 }

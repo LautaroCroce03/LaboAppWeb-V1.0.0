@@ -11,11 +11,13 @@ namespace LaboAppWebV1._0._0.Controllers
     {
         private readonly ILogger<EstadoPedidoController> _logger;
         private readonly IEstadoPedidoBusiness _estadoPedidoBusiness;
+        private readonly IResponseApi _responseApi;
 
-        public EstadoPedidoController(ILogger<EstadoPedidoController> logger, IEstadoPedidoBusiness estadoPedidoBusiness)
+        public EstadoPedidoController(ILogger<EstadoPedidoController> logger, IEstadoPedidoBusiness estadoPedidoBusiness, IResponseApi responseApi)
         {
             _logger = logger;
             _estadoPedidoBusiness = estadoPedidoBusiness;
+            _responseApi = responseApi;
         }
 
         [HttpGet()]
@@ -28,17 +30,20 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if ((_result != null) && (_result.Count > 0))
                 {
-                    return Ok(_result);
+                    var response = _responseApi.Msj(200, "Listado de Estados de Pedido", "Se han encontrado los estados de pedido.", HttpContext, _result);
+                    return Ok(response);
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    var response = _responseApi.Msj(400, "Error al realizar el alta", "No se encontraron estados de pedido.", HttpContext, null);
+                    return BadRequest(response);
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Get");
-                throw;
+                var response = _responseApi.Msj(500, "Error interno", "Ocurrió un error al obtener los estados de pedido.", HttpContext, null);
+                return StatusCode(500, response);
             }
         }
     }

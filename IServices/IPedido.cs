@@ -13,6 +13,10 @@ namespace LaboAppWebV1._0._0.IServices
         Task<bool> ExisteAsync(Int32 idPedido);
         Task CambioEstadoidClienteAsync(string idCliente, Int32 idEstado);
         Task CambioEstadoAsync(Int32 idPedido, Int32 idEstado);
+        Task<List<ModelsDto.ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
+        Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<PedidoDto?> PedidoById(int id);
     }
     public interface IPedidoDataAccess
     {
@@ -25,5 +29,9 @@ namespace LaboAppWebV1._0._0.IServices
         Task<bool> ExisteIdClienteAsync(string idCliente);
         Task<bool> ExisteAsync(Int32 idPedido);
         Task CambioEstadoidClienteAsync(string idCliente, Int32 idEstado);
+        Task<List<ModelsDto.ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
+        Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<PedidoDto?> PedidoById(int id);
     }
 }

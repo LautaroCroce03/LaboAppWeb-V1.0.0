@@ -179,5 +179,57 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<List<ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId)
+        {
+            try
+            {
+                return await _pedidoDataAccess.GetProductosPendientesXSector(sectorId);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _pedidoDataAccess.GetProductoMenosVendido(fechaInicio, fechaFin);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
+        {
+            try
+            {
+                return await _pedidoDataAccess.GetProductoMasVendido(fechaInicio, fechaFin);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
+
+        public async Task<PedidoDto?> PedidoById(int id)
+        {
+            try
+            {
+                return await _pedidoDataAccess.PedidoById(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

@@ -11,11 +11,13 @@ namespace LaboAppWebV1._0._0.Controllers
     {
         private readonly ILogger<EstadoMesaController> _logger;
         private readonly IEstadoMesaBusiness _estadoMesa;
+        private readonly IResponseApi _responseApi;
 
-        public EstadoMesaController(ILogger<EstadoMesaController> logger, IEstadoMesaBusiness estadoMesa)
+        public EstadoMesaController(ILogger<EstadoMesaController> logger, IEstadoMesaBusiness estadoMesa, IResponseApi responseApi)
         {
             _logger = logger;
             _estadoMesa = estadoMesa;
+            _responseApi = responseApi;
         }
 
         [HttpGet()]
@@ -28,17 +30,20 @@ namespace LaboAppWebV1._0._0.Controllers
 
                 if (_result.Count > 0)
                 {
-                    return Ok(_result);
+                    var response = _responseApi.Msj(200, "Listado de Estados de Mesa", "Se han encontrado los estados de mesa.", HttpContext, _result);
+                    return Ok(response);
                 }
                 else
                 {
-                    return BadRequest("Error al realizar el alta");
+                    var response = _responseApi.Msj(400, "No hay estados de mesa", "No se encontraron estados de mesa en el sistema.", HttpContext, null);
+                    return BadRequest(response);
                 }
             }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "Get");
-                throw;
+                var response = _responseApi.Msj(500, "Error interno", "Ocurrió un error al obtener los estados de mesa.", HttpContext, null);
+                return StatusCode(500, response);
             }
         }
     }

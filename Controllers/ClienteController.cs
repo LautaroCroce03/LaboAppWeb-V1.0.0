@@ -11,6 +11,7 @@ namespace LaboAppWebV1._0._0.Controllers
         private ILogger<ClienteController> _logger;
         private readonly IResponseApi _responseApi;
         private readonly IClienteBusiness _clienteBusiness;
+
         public ClienteController(ILogger<ClienteController> logger, IResponseApi responseApi, IClienteBusiness clienteBusiness)
         {
             _logger = logger;
@@ -24,14 +25,14 @@ namespace LaboAppWebV1._0._0.Controllers
             // Validación para verificar que los parámetros tengan exactamente 5 caracteres
             if (string.IsNullOrWhiteSpace(codigoMesa) || codigoMesa.Length != 5 || !codigoMesa.All(char.IsLetterOrDigit))
             {
-                return BadRequest(_responseApi.Msj(400,"Error", "El parámetro 'codigoMesa' debe tener exactamente 5 caracteres alfanuméricos.", HttpContext,""));
+                return BadRequest(_responseApi.Msj(400, "Error", "El parámetro 'codigoMesa' debe tener exactamente 5 caracteres alfanuméricos.", this.HttpContext, ""));
             }
 
             if (string.IsNullOrWhiteSpace(codigoCliente) || codigoCliente.Length != 5 || !codigoCliente.All(char.IsLetterOrDigit))
             {
-                return BadRequest(_responseApi.Msj(400, "Error", "El parámetro 'CodigoCliente' debe tener exactamente 5 caracteres alfanuméricos.", HttpContext, ""));
-
+                return BadRequest(_responseApi.Msj(400, "Error", "El parámetro 'CodigoCliente' debe tener exactamente 5 caracteres alfanuméricos.", this.HttpContext, ""));
             }
+
             try
             {
                 // Llamada al servicio para obtener la demora
@@ -40,17 +41,15 @@ namespace LaboAppWebV1._0._0.Controllers
                 // Verifica si el resultado es nulo o vacío
                 if (resultado == null)
                 {
-                    return NotFound(_responseApi.Msj(404, "Error", "El parámetro 'CodigoCliente' debe tener exactamente 5 caracteres alfanuméricos.", HttpContext, ""));
+                    return NotFound(_responseApi.Msj(404, "Error", "No se encontró la demora para el cliente.", this.HttpContext, ""));
                 }
 
-                return Ok(_responseApi.Msj(200, "Correcto", "Demora obtenida con éxito.", HttpContext, resultado));
-
+                return Ok(_responseApi.Msj(200, "Correcto", "Demora obtenida con éxito.", this.HttpContext, resultado));
             }
-
             catch (Exception ex)
             {
-
-                return BadRequest(_responseApi.Msj(400, "Correcto", "Demora obtenida con éxito.", HttpContext, ""));
+                _logger.LogError(ex, "Error al obtener la demora para los parámetros proporcionados.");
+                return BadRequest(_responseApi.Msj(400, "Error", "Hubo un problema al obtener la demora.", this.HttpContext, ""));
             }
         }
     }
