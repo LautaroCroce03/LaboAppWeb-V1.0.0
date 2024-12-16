@@ -205,12 +205,43 @@ namespace LaboAppWebV1._0._0.Controllers
                 }
 
                 
-                return Ok(_responseApi.Msj(404, "Error", "Productos en estado pendiente encontrados exitosamente.", HttpContext, productos));
+                return Ok(_responseApi.Msj(200, "Correcto", "Productos en estado pendiente encontrados exitosamente.", HttpContext, productos));
             }
             catch (Exception ex)
             {
                 return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error al obtener los productos pendientes: {ex.Message}", HttpContext, null));
             }
+        }
+
+        [Authorize(Policy = "RequireSocioRole")]
+        [HttpGet("GetPedidoBy/{id}")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        public async Task<IActionResult> GetPedidoById(int id)
+        {
+            // Verificar si el ID proporcionado es mayor que 0
+            if (id <= 0)
+            {
+                
+                return BadRequest(_responseApi.Msj(400, "Error", $"El ID proporcionado no es válido. Debe ser un número mayor que 0.", HttpContext, null));
+            }
+            try
+            {
+                // Guarda el pedido en una variable que va a llamar al Servicio 
+                var pedido = await _pedidoBusiness.PedidoById(id);
+                if (pedido == null)
+                {
+                    
+                    return NotFound(_responseApi.Msj(404, "Error", $"No se encontró un pedido con el ID {id}.", HttpContext, null));
+                }
+                // Si se encuentra el pedido, devolverlo con un código de estado 200 OK
+                
+                return Ok(_responseApi.Msj(200, "Correcto", "Pedido obtenido exitosamente.", HttpContext, pedido));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(_responseApi.Msj(400, "Error", $"Ocurrió un error inesperado al buscar el pedido: {ex.Message}", HttpContext, null));
+            }
+
         }
     }
 }

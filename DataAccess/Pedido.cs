@@ -321,6 +321,23 @@ namespace LaboAppWebV1._0._0.DataAccess
             return productoMasVendidoDto;
         }
 
+        // GET de 1 pedido por su ID 
+        public async Task<PedidoDto?> PedidoById(int id)
+        {
+            _logger.LogInformation($"Buscando pedido con ID: {id}");
+            // Buscar el pedido en la BBDD por su ID
+            var pedido = await _laboAppWebV1Context.Pedidos.FindAsync(id);
+            if (pedido == null)
+            {
+                _logger.LogWarning($"No se encontró el pedido con ID: {id}");
+                return null;
+            }
 
+            // Mapear Pedido a PedidoResponseDto para devolverlo al controller
+            var pedidoResponseDto = this._mapper.Map<PedidoDto>(pedido);
+
+
+            return pedidoResponseDto;
+        }
     }
 }

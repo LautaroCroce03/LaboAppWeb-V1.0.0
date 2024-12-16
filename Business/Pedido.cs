@@ -218,5 +218,18 @@ namespace LaboAppWebV1._0._0.Business
                 throw;
             }
         }
+
+        public async Task<PedidoDto?> PedidoById(int id)
+        {
+            try
+            {
+                return await _pedidoDataAccess.PedidoById(id);
+            }
+            catch (Exception)
+            {
+
+                throw;
+            }
+        }
     }
 }

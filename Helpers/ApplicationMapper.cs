@@ -36,6 +36,7 @@ namespace LaboAppWebV1._0._0.Helpers
                     .ForMember(dest => dest.NombreDesc, opt => opt.MapFrom(src => src.Descripcion))
                     .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore());
 
+
             //CreateMap<Models.EstadoMesa, ModelsDto.EstadoMesaList>()
             //    .ForMember(dest => dest.IdEstado, opt => opt.MapFrom(src => src.IdEstado)) 
             //    .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion));

@@ -16,6 +16,7 @@ namespace LaboAppWebV1._0._0.IServices
         Task<List<ModelsDto.ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
         Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin);
         Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<PedidoDto?> PedidoById(int id);
     }
     public interface IPedidoDataAccess
     {
@@ -31,5 +32,6 @@ namespace LaboAppWebV1._0._0.IServices
         Task<List<ModelsDto.ProductoPendienteDto>> GetProductosPendientesXSector(int sectorId);
         Task<ProductoVendidoDto> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin);
         Task<ProductoVendidoDto> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin);
+        Task<PedidoDto?> PedidoById(int id);
     }
 }
