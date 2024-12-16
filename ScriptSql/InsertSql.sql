@@ -14,6 +14,13 @@ delete from sectores
 ALTER TABLE Empleados 
 ADD estado BIT NOT NULL default 1;
 
+ALTER TABLE pedidos 
+ADD tiempo_estimado int NOT NULL;
+
+ALTER TABLE pedidos 
+ADD Observaciones varchar(300) NULL default null;
+ALTER TABLE pedidos
+ALTER COLUMN fecha_finalizacion DATETIME NULL;
 --reiniciamos las claves
 DBCC CHECKIDENT('estado_mesas' , RESEED, 0)
 DBCC CHECKIDENT('mesas' , RESEED, 0)
@@ -79,7 +86,7 @@ VALUES
     (4, 'Café', 400, 2500.00);	
 	
 
-	INSERT INTO Empleados (Nombre, Usuario, Password, id_sector, id_rol, estado)
+INSERT INTO Empleados (Nombre, Usuario, Password, id_sector, id_rol, estado)
 VALUES
     ('Lucas González', 'bartender1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, 1, 1),
     ('Sofía Martínez', 'cervecero1', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 2, 2, 1),
@@ -89,4 +96,21 @@ VALUES
     ('Valentina López', 'bartender2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 1, 1, 0),
     ('Joaquín Díaz', 'socio2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 1),
     ('Emilia Sánchez', 'cocinero2', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 3, 3, 1),
-    ('Tomás Herrera', 'socio3', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 0);	
+    ('Tomás Herrera', 'socio3', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 5, 0),
+	('Benito Paco', 'benito', 'a665a45920422f9d417e4867efdc4fb8a04a1f3fff1fa07e998e86f7f7a27ae3', 5, 6, 1);		
+	
+INSERT INTO mesas (id_estado, nombre)
+VALUES
+(1, 'Mesa Principal'),
+(1, 'Mesa Ventana'),
+(1, 'Mesa Terraza'),
+(1, 'Mesa Privada'),
+(1, 'Mesa Familiar');
+
+INSERT INTO comandas (id_mesa, nombre_cliente)
+VALUES
+(1, 'Juan García'),
+(2, 'María López'),
+(3, 'Carlos Fernández'),
+(4, 'Ana Martínez'),
+(1, 'Luis Rodríguez');	

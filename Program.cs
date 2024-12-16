@@ -74,10 +74,10 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 // **Configuración de Autorización con Roles**
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("RequireSocioRole", policy => policy.RequireRole("Socio"));
-    options.AddPolicy("RequireMozoRole", policy => policy.RequireRole("Mozo"));
+    options.AddPolicy("RequireSocioRole", policy => policy.RequireRole("Socio","Administrador"));
+    options.AddPolicy("RequireMozoRole", policy => policy.RequireRole("Mozo", "Administrador"));
     options.AddPolicy("RequireAdministradorRole", policy => policy.RequireRole("Administrador"));
-    options.AddPolicy("RequireBartenderOrCerveceroOrCocineroRole", policy => policy.RequireRole("Bartender", "Cervecero", "Cocinero"));
+    options.AddPolicy("RequireBartenderOrCerveceroOrCocineroRole", policy => policy.RequireRole("Bartender", "Cervecero", "Cocinero", "Administrador"));
 
 });
 

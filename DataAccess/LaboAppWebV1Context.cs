@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using LaboAppWebV1._0._0.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace LaboAppWebV1._0._0.DataAccess
 {
-
-
     public partial class LaboAppWebV1Context : DbContext
     {
         public LaboAppWebV1Context()
@@ -153,6 +152,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.Property(e => e.IdComanda).HasColumnName("id_comanda");
                 entity.Property(e => e.IdEstado).HasColumnName("id_estado");
                 entity.Property(e => e.IdProducto).HasColumnName("id_producto");
+                entity.Property(e => e.Observaciones)
+                    .HasMaxLength(300)
+                    .IsUnicode(false);
+                entity.Property(e => e.TiempoEstimado).HasColumnName("tiempo_estimado");
 
                 entity.HasOne(d => d.IdComandaNavigation).WithMany(p => p.Pedidos)
                     .HasForeignKey(d => d.IdComanda)

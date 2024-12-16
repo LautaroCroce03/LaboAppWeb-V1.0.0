@@ -9,6 +9,6 @@
         public int IdEstadoPedido { get; set; }
         public string EstadoDescripcion { get; set; }
         public DateTime FechaCreacion { get; set; }
-        public DateTime FechaFinalizacion { get; set; }
+        public DateTime? FechaFinalizacion { get; set; }
     }
 }

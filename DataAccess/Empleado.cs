@@ -35,7 +35,7 @@ namespace LaboAppWebV1._0._0.DataAccess
         {
             try
             {
-                var result = await _laboAppWebV1Context.Empleados.AsNoTrackingWithIdentityResolution().Where(x=> x.Estado.Value.Equals(estado))
+                var result = await _laboAppWebV1Context.Empleados.Include(e => e.IdRolNavigation).AsNoTrackingWithIdentityResolution().Where(x=> x.Estado.Value.Equals(estado))
                                 .ToListAsync();
 
                 if ((result != null) && (result.Count > 0))

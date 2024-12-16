@@ -23,6 +23,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpPost()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Post([FromBody] ModelsDto.ComandaDto comanda)
         {
             try
@@ -53,6 +54,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpGet("{idComanda}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Get(Int32 idComanda)
         {
             try
@@ -83,6 +85,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpGet()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Get()
         {
             try
@@ -110,6 +113,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpDelete("{idComanda}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Delete(int idComanda)
         {
             try
