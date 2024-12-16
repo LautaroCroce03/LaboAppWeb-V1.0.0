@@ -21,6 +21,11 @@ ALTER TABLE pedidos
 ADD Observaciones varchar(300) NULL default null;
 ALTER TABLE pedidos
 ALTER COLUMN fecha_finalizacion DATETIME NULL;
+
+ALTER TABLE pedidos 
+ADD codigo_cliente varchar(5) NULL;
+
+
 --reiniciamos las claves
 DBCC CHECKIDENT('estado_mesas' , RESEED, 0)
 DBCC CHECKIDENT('mesas' , RESEED, 0)

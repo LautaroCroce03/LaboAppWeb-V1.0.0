@@ -13,17 +13,17 @@ namespace LaboAppWebV1._0._0.DataAccess
             _logger = logger;
         }
 
-        public async Task<bool> AgregarAsync(Models.Pedido pedido) 
+        public async Task<Int32> AgregarAsync(Models.Pedido pedido) 
         {
             try
             {
                 await _laboAppWebV1Context.Pedidos.AddAsync(pedido);
                 await _laboAppWebV1Context.SaveChangesAsync();
 
-                if(pedido.IdEstado > 0)
-                    return true;
+                if(pedido.IdPedido > 0)
+                    return pedido.IdPedido;
                 else 
-                    return false;
+                    return 0;
             }
             catch (Exception ex)
             {
@@ -67,7 +67,7 @@ namespace LaboAppWebV1._0._0.DataAccess
                                   Cantidad = p.Cantidad,
                                   IdProducto = prod.IdProducto,
                                   ProductoDescripcion = prod.Descripcion,
-                                  IdEstadoPedido = ep.IdEstado,
+                                  IdEstadoPedido = p.IdEstado,
                                   EstadoDescripcion = ep.Descripcion,
                                   FechaCreacion = p.FechaCreacion,
                                   FechaFinalizacion = p.FechaFinalizacion
@@ -110,6 +110,73 @@ namespace LaboAppWebV1._0._0.DataAccess
             catch (Exception ex)
             {
                 _logger.LogError(ex, "DeleteAsync");
+                throw;
+            }
+        }
+
+        public async Task CambioEstadoAsync(Int32 idPedido, Int32 idEstado)
+        {
+            try
+            {
+                var _result = await _laboAppWebV1Context.Pedidos.FirstOrDefaultAsync(p=> p.IdPedido.Equals(idPedido));
+                
+                if (_result != null) 
+                {
+                    _result.IdEstado = idEstado;
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+               
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ListadoAsync");
+                throw;
+            }
+        }
+
+        public async Task CambioEstadoidClienteAsync(string idCliente, Int32 idEstado)
+        {
+            try
+            {
+                var _result = await _laboAppWebV1Context.Pedidos.FirstOrDefaultAsync(p => p.CodigoCliente.Equals(idCliente));
+
+                if (_result != null)
+                {
+                    _result.IdEstado = idEstado;
+                    await _laboAppWebV1Context.SaveChangesAsync();
+                }
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ListadoAsync");
+                throw;
+            }
+        }
+
+        public async Task<bool> ExisteAsync(Int32 idPedido)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Pedidos.AnyAsync(p => p.IdPedido.Equals(idPedido));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ListadoAsync");
+                throw;
+            }
+        }
+        public async Task<bool> ExisteIdClienteAsync(string idCliente)
+        {
+            try
+            {
+                return await _laboAppWebV1Context.Pedidos.AnyAsync(p => p.CodigoCliente.Equals(idCliente));
+
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "ListadoAsync");
                 throw;
             }
         }

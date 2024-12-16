@@ -143,6 +143,10 @@ namespace LaboAppWebV1._0._0.DataAccess
 
                 entity.Property(e => e.IdPedido).HasColumnName("id_pedido");
                 entity.Property(e => e.Cantidad).HasColumnName("cantidad");
+                entity.Property(e => e.CodigoCliente)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("codigo_cliente");
                 entity.Property(e => e.FechaCreacion)
                     .HasColumnType("datetime")
                     .HasColumnName("fecha_creacion");

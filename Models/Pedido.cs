@@ -23,6 +23,8 @@ public partial class Pedido
 
     public string? Observaciones { get; set; }
 
+    public string? CodigoCliente { get; set; }
+
     public virtual Comanda IdComandaNavigation { get; set; } = null!;
 
     public virtual EstadoPedido IdEstadoNavigation { get; set; } = null!;

@@ -29,8 +29,8 @@ namespace LaboAppWebV1._0._0.Controllers
             try
             {
 
-                if (comanda.Pedidos.Count.Equals(0))
-                    return BadRequest("Sin pedido");
+                //if (comanda.Pedidos.Count.Equals(0))
+                //    return BadRequest("Sin pedido");
 
                 if (!await _mesaBusiness.ExisteAsync(comanda.IdMesa))
                     return BadRequest("El numero de mesa ingresado no existe");
