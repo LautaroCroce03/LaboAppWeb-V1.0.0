@@ -11,6 +11,8 @@ public partial class Mesa
 
     public int IdEstado { get; set; }
 
+    public string? Codigo { get; set; }
+
     public virtual ICollection<Comanda> Comanda { get; set; } = new List<Comanda>();
 
     public virtual EstadoMesa IdEstadoNavigation { get; set; } = null!;

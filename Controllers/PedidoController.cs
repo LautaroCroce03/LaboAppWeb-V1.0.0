@@ -20,7 +20,7 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpPost()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        [Authorize(Policy = "RequireSocioRole")]
+        [Authorize(Policy = "RequireMozoRole")]
         public async Task<IActionResult> Post([FromBody] ModelsDto.PedidoDto pedido)
         {
             try
@@ -43,10 +43,10 @@ namespace LaboAppWebV1._0._0.Controllers
             }
         }
 
-        [HttpGet("/{idPedido}/{idEstadoNuevo}")]
+        [HttpPut("/{idPedido}/{idEstadoNuevo}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
-        public async Task<IActionResult> Get(Int32 idPedido, Int32 idEstadoNuevo)
+        public async Task<IActionResult> Put(Int32 idPedido, Int32 idEstadoNuevo)
         {
             try
             {
@@ -67,10 +67,10 @@ namespace LaboAppWebV1._0._0.Controllers
                 throw;
             }
         }
-        [HttpGet("codigoCliente/{codCliente}/{idEstadoNuevo}")]
+        [HttpPut("codigoCliente/{codCliente}/{idEstadoNuevo}")]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         [Authorize(Policy = "RequireBartenderOrCerveceroOrCocineroRole")]
-        public async Task<IActionResult> GetCodCliente(string codCliente, Int32 idEstadoNuevo)
+        public async Task<IActionResult> PutCodCliente(string codCliente, Int32 idEstadoNuevo)
         {
             try
             {

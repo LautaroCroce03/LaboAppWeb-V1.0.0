@@ -123,6 +123,10 @@ namespace LaboAppWebV1._0._0.DataAccess
                 entity.ToTable("mesas");
 
                 entity.Property(e => e.IdMesa).HasColumnName("id_mesa");
+                entity.Property(e => e.Codigo)
+                    .HasMaxLength(5)
+                    .IsUnicode(false)
+                    .HasColumnName("codigo");
                 entity.Property(e => e.IdEstado).HasColumnName("id_estado");
                 entity.Property(e => e.Nombre)
                     .HasMaxLength(100)

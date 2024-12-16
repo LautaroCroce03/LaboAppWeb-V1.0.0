@@ -25,6 +25,8 @@ ALTER COLUMN fecha_finalizacion DATETIME NULL;
 ALTER TABLE pedidos 
 ADD codigo_cliente varchar(5) NULL;
 
+ALTER TABLE mesas 
+ADD codigo varchar(5) NULL;
 
 --reiniciamos las claves
 DBCC CHECKIDENT('estado_mesas' , RESEED, 0)
@@ -41,14 +43,10 @@ DBCC CHECKIDENT('estado_pedidos' , RESEED, 0)
 --se hace el insert
 
 INSERT INTO estado_mesas (Descripcion)
-VALUES('Libre'),
-    ('Reservada'),
-    ('Ocupada'),
-    ('En Uso - Comiendo'),
-    ('Esperando Limpieza'),
-    ('Limpieza en Proceso'),
-    ('Inhabilitada'),
-    ('Finalizado');
+VALUES('cliente esperando pedido'),
+    ('cliente comiendo'),
+    ('cliente pagando'),
+    ('cerrada');
 	
 INSERT INTO estado_pedidos(Descripcion)
 VALUES
