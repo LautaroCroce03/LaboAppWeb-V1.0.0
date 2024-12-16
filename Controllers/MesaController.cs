@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/mesa")]
+    [Route("api/v1/mesa")]
     [ApiController]
     public class MesaController : ControllerBase
     {

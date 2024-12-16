@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/empleado")]
+    [Route("api/v1/empleado")]
     [ApiController]
     public class EmpleadoController : ControllerBase
     {

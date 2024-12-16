@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/login")]
+    [Route("api/v1/login")]
     [ApiController]
     public class LoginController : ControllerBase
     {

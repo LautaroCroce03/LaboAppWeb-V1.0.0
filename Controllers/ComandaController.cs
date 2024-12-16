@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/comanda")]
+    [Route("api/v1/comanda")]
     [ApiController]
     public class ComandaController : ControllerBase
     {

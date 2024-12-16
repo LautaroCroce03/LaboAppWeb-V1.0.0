@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace LaboAppWebV1._0._0.Controllers
 {
-    [Route("api/sector")]
+    [Route("api/v1/sector")]
     [ApiController]
     public class SectorController : ControllerBase
     {
@@ -20,17 +20,17 @@ namespace LaboAppWebV1._0._0.Controllers
 
         [HttpPost()]
         [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
-        public async Task<IActionResult> Post([FromBody]ModelsDto.SectorDto sector)
+        public async Task<IActionResult> Post([FromBody] ModelsDto.SectorDto sector)
         {
             try
             {
-                 var _result = await _sector.AgregarAsync(sector);
+                var _result = await _sector.AgregarAsync(sector);
 
                 if (_result > 0)
                 {
                     return Ok("Se agrego correctamente");
                 }
-                else 
+                else
                 {
                     return BadRequest("Error al realizar el alta");
                 }

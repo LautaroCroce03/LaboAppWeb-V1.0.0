@@ -26,6 +26,7 @@ namespace LaboAppWebV1._0._0.Helpers
                     .ForMember(dest => dest.IdComanda, opt => opt.MapFrom((src, dest, destMember, context) => (int)context.Items["idComanda"]))
                     .ReverseMap();
 
+            CreateMap<Models.EstadoPedido, ModelsDto.EstadoPedidoDto>();
             //CreateMap<Models.EstadoMesa, ModelsDto.EstadoMesaList>()
             //    .ForMember(dest => dest.IdEstado, opt => opt.MapFrom(src => src.IdEstado)) 
             //    .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion));
