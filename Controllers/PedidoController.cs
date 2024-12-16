@@ -97,9 +97,10 @@ namespace LaboAppWebV1._0._0.Controllers
         }
 
         //// INFORMES PEDIDOS A -  producto más vendido
-        [Authorize(Policy = "RequireSocioRole")]
+        
         [HttpGet("productoMasVendido")]
-
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
         public async Task<IActionResult> GetProductoMasVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             try
@@ -127,8 +128,10 @@ namespace LaboAppWebV1._0._0.Controllers
 
 
         // INFORMES PEDIDOS B -  producto menos vendido
-        [Authorize(Policy = "RequireSocioRole")]
+        
         [HttpGet("productoMenosVendido")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
+        [Authorize(Policy = "RequireSocioRole")]
         public async Task<IActionResult> GetProductoMenosVendido(DateTime? fechaInicio, DateTime? fechaFin)
         {
             try
@@ -153,8 +156,9 @@ namespace LaboAppWebV1._0._0.Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("GetProductosEnEstadoPendientePorSector")]
+       
+        [HttpGet("productosEnEstadoPendientePorSector")]
+        [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme)]
         public async Task<IActionResult> GetProductosxSector(int sectorId)
         {
 
