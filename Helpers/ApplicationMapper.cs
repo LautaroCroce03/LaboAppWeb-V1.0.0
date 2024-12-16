@@ -32,6 +32,10 @@ namespace LaboAppWebV1._0._0.Helpers
                            .ForMember(dest => dest.TiempoEstimado, opt => opt.MapFrom(src => src.TiempoEstimado))
                            .ForMember(dest => dest.TiempoDemorado, opt => opt.MapFrom(src => (int)Math.Round((DateTime.Now - src.FechaCreacion).TotalMinutes - src.TiempoEstimado, 0)));
 
+            CreateMap<Models.Producto, ProductoVendidoDto>()
+                    .ForMember(dest => dest.NombreDesc, opt => opt.MapFrom(src => src.Descripcion))
+                    .ForMember(dest => dest.CantidadVendida, opt => opt.Ignore());
+
             //CreateMap<Models.EstadoMesa, ModelsDto.EstadoMesaList>()
             //    .ForMember(dest => dest.IdEstado, opt => opt.MapFrom(src => src.IdEstado)) 
             //    .ForMember(dest => dest.Descripcion, opt => opt.MapFrom(src => src.Descripcion));
